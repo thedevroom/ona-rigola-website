@@ -141,6 +141,40 @@ Contraste verificado con `npm run a11y:contrast` (script propio que calcula rati
 sobre los pares reales). Todos los pares de texto superan 4.5:1; los elementos de
 interfaz superan 3:1.
 
+### Presentación animada del sitio
+
+`public/presentacion/` es una pieza autocontenida (sin React ni dependencias) que reproduce el
+sitio completo como un vídeo de presentación de **1 min 24 s**:
+
+- **Portada de carga** con el rótulo y un contador real.
+- **Ordenador**: la web entra en un marco de navegador y recorre la portada, el portfolio, los
+  estilos, la banda de reserva y el pie, con desplazamiento continuo y parallax por pieza.
+- **Transición**: el escritorio retrocede y gira mientras el móvil sube hasta el centro.
+- **Móvil**: el mismo recorrido en la versión de teléfono, dentro de su carcasa.
+- **Cierre** con la dedicatoria y el emoji, más un botón de repetición.
+
+Se sirve en **`/presentacion`** (reescritura en `next.config.ts`). Parámetros útiles:
+
+| Parámetro  | Para qué                                                         |
+| ---------- | ---------------------------------------------------------------- |
+| `?t=42000` | Congela la presentación en ese milisegundo (revisión o captura). |
+| `?hud=0`   | Oculta los controles para grabar la pantalla limpia.             |
+
+Controles: espacio o `K` pausa, flechas ±2 s, `Inicio`/`Fin`, `F` pantalla completa, y una barra
+con marcas de capítulo que se puede arrastrar. Todo el movimiento lo calcula **un único reloj**,
+así que la pausa y el arrastre son exactos. Con `prefers-reduced-motion` se muestra un fotograma
+fijo en pausa en lugar de animar.
+
+La escena está replicada en HTML/CSS propio (no en vídeo) para que pese menos de 1 MB, se vea
+nítida en cualquier pantalla y se pueda ajustar como cualquier otra página del repo. Para
+convertirla en `.mp4`, se graba la pestaña en pantalla completa con `?hud=0` —dura exactamente
+1 min 24 s— o se capturan fotogramas con `?t=` y se montan con ffmpeg (no disponible en este
+entorno, por eso no se entrega el archivo de vídeo).
+
+**Imágenes profesionales del resultado** en `public/presentacion/stills/` (WebP, sin texto
+incrustado): escritorio, móvil en mano, dúo sobre fondo negro, contacto en móvil, portfolio en
+papel y una hoja de contacto con las cinco.
+
 ---
 
 ## 4. Requisitos
@@ -290,10 +324,10 @@ Detalle completo en [`docs/qa-report.md`](docs/qa-report.md). Resumen:
 - `npm run lint` — pasa sin errores ni avisos.
 - `npm run format:check` — pasa.
 - `npm run build` — build de producción correcto (16 rutas estáticas, 4 fichas SSG, 1 endpoint).
-- `npm run test:e2e` — 60 pruebas en escritorio y móvil, todas correctas (2 omitidas por
-  ser específicas del otro dispositivo). Tras el rediseño de `/contacto` la suite no se ha
-  podido reejecutar en este entorno (sin navegador); se ha validado con build, `check`,
-  contraste y revisión del HTML servido.
+- `npm run test:e2e` — 62 pruebas en escritorio y móvil. Tras el rediseño de `/contacto` y la
+  presentación, la suite no se ha podido reejecutar en este entorno (sin navegador); se ha
+  validado con build, `check`, contraste, prueba de humo del motor con jsdom y revisión del
+  HTML servido.
 - `npm run a11y:contrast` — todos los pares cumplen.
 - Inspección visual real con capturas a 360, 390, 430, 768, 1024, 1280, 1440 y 1920 px:
   sin desbordamiento horizontal, sin imágenes rotas y sin errores de consola.

@@ -50,10 +50,12 @@ Cobertura:
     pantalla completa con el cierre dentro del viewport.
 17. La hoja del formulario conserva los mismos `name`, etiquetas y `data-testid`, y el
     contraste de sus textos sobre papel está comprobado por script (6,81:1 en errores).
-18. La imagen principal tiene `alt` descriptivo y no hay errores de consola ni de red.
-19. Títulos, descripciones (> 60 caracteres) y canónicas únicas en las 9 páginas.
-20. Todos los bloques JSON-LD se parsean como JSON válido.
-21. No existen enlaces `href="#"` ni `href=""`.
+18. `/presentacion` devuelve 200, carga sus fuentes, imágenes y script, cierra con la
+    dedicatoria y lleva `noindex, nofollow`.
+19. La imagen principal tiene `alt` descriptivo y no hay errores de consola ni de red.
+20. Títulos, descripciones (> 60 caracteres) y canónicas únicas en las 9 páginas.
+21. Todos los bloques JSON-LD se parsean como JSON válido.
+22. No existen enlaces `href="#"` ni `href=""`.
 
 ### Nota sobre el entorno de ejecución de Playwright
 

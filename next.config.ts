@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
     // optimizadas por next/image (evita hotlinking y dependencias externas).
     remotePatterns: [],
   },
+  async rewrites() {
+    // Presentación animada: página estática autocontenida en `public/`.
+    return [{ source: "/presentacion", destination: "/presentacion/index.html" }];
+  },
   async headers() {
     return [
       {

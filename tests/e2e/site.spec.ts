@@ -322,3 +322,32 @@ test.describe("Portada de carga, pie y barra a medida", () => {
     expect(nativeWidth).not.toBe("none");
   });
 });
+
+test.describe("Presentación animada", () => {
+  test("la presentación se sirve y cierra con la dedicatoria", async ({ request }) => {
+    const response = await request.get("/presentacion");
+    expect(response.status()).toBe(200);
+
+    const html = await response.text();
+    expect(html).toContain("Hecho con Cristian,");
+    expect(html).toContain("con cariño 😝");
+    expect(html).toContain("presentacion.js");
+    expect(html).toContain('meta name="robots" content="noindex, nofollow"');
+  });
+
+  test("sus recursos cargan y no se indexa", async ({ request }) => {
+    for (const asset of [
+      "/presentacion/presentacion.css",
+      "/presentacion/presentacion.js",
+      "/presentacion/assets/fonts/serif-display.woff2",
+      "/presentacion/assets/img/portrait.webp",
+      "/presentacion/stills/03-duo.webp",
+    ]) {
+      const response = await request.get(asset);
+      expect(response.status(), asset).toBe(200);
+    }
+
+    const robots = await request.get("/robots.txt");
+    expect(await robots.text()).toContain("Disallow: /api/");
+  });
+});
