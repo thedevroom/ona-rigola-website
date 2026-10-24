@@ -71,6 +71,11 @@ const pairs = [
   ["Anillo de foco sobre marfil", colors.focus, colors.ivory, 3],
   ["Bordes interactivos", colors.ink55, colors.ivory, 3],
   ["Texto decorativo (solo iconos)", colors.ink40, colors.ivory, 0],
+  ["Formulario sobre papel · etiquetas", colors.ink55, colors.paper, 4.5],
+  ["Formulario sobre papel · pistas y marcadores", colors.ink55, colors.paper, 4.5],
+  ["Formulario sobre papel · errores", "#8a3d14", colors.paper, 4.5],
+  ["Borde de campo inválido", "#a2491f", colors.paper, 3],
+  ["Formulario sobre papel · texto", colors.ink, colors.paper, 4.5],
   [
     "Portada de carga · etiquetas",
     composite(colors.ivory, 0.5, colors.inkStrong),

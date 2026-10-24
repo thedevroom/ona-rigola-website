@@ -12,7 +12,7 @@ import {
   type BookingStyle,
 } from "@/lib/booking-schema";
 import { siteConfig } from "@/config/site";
-import { ArrowRight } from "@/components/ui/icons";
+import { ArrowRight, StarGlyph } from "@/components/ui/icons";
 import styles from "./booking-form.module.css";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -162,23 +162,31 @@ export function BookingForm() {
 
   if (status === "success") {
     return (
-      <div className={`${styles.status}`} role="status" data-testid="booking-success">
-        <p className="eyebrow eyebrow--inverse">Solicitud recibida</p>
-        <h3 className={styles.statusTitle}>Gracias por escribir.</h3>
-        <p className={styles.statusText}>{serverMessage}</p>
-        <p className={styles.hint}>
+      <div className={styles.receipt} role="status" data-testid="booking-success">
+        <span className={styles.receiptStar} aria-hidden="true">
+          <StarGlyph size={22} />
+        </span>
+        <p className={styles.cardMeta}>Solicitud recibida</p>
+        <p className={styles.receiptTitle}>
+          Gracias por
+          <br />
+          <span className={styles.receiptAccent}>escribir.</span>
+        </p>
+        <p className={styles.receiptText}>{serverMessage}</p>
+        <p className={styles.receiptNote}>
           {siteConfig.booking.responseNote} Si necesitas añadir algo, responde al correo de
           confirmación.
         </p>
         <button
           type="button"
-          className="btn btn--inverse"
+          className={`btn ${styles.receiptButton}`}
           onClick={() => {
             setStatus("idle");
             setServerMessage("");
           }}
         >
           Enviar otra solicitud
+          <ArrowRight />
         </button>
       </div>
     );
@@ -200,199 +208,252 @@ export function BookingForm() {
         Formulario de solicitud de cita
       </h3>
 
-      <div className={styles.grid}>
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor={fieldId("name")}>
-            Nombre <span aria-hidden="true">*</span>
-          </label>
-          <input
-            id={fieldId("name")}
-            name="name"
-            type="text"
-            className={`${styles.control} ${invalid("name") ? styles.invalid : ""}`}
-            value={values.name}
-            onChange={(event) => update("name", event.target.value)}
-            autoComplete="name"
-            required
-            aria-required="true"
-            aria-invalid={invalid("name") || undefined}
-            aria-describedby={describedBy("name")}
-            placeholder="Tu nombre"
-          />
-          {errors.name ? (
-            <p className={styles.error} id={errorId("name")}>
-              {errors.name}
-            </p>
-          ) : null}
-        </div>
+      <header className={styles.cardHead}>
+        <p className={styles.cardMeta}>
+          <span>Formulario de cita</span>
+          <StarGlyph size={9} />
+          <span>Barcelona</span>
+        </p>
+        <p className={styles.greeting}>
+          Hola Ona,
+          <span className={styles.greetingAccent}>te cuento…</span>
+        </p>
+        <p className={styles.cardIntro}>
+          Solo necesito tu idea y, si los tienes, un par de datos que ayuden a valorarla. Nada tiene
+          que estar decidido todavía.
+        </p>
+      </header>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor={fieldId("email")}>
-            Correo electrónico <span aria-hidden="true">*</span>
-          </label>
-          <input
-            id={fieldId("email")}
-            name="email"
-            type="email"
-            className={`${styles.control} ${invalid("email") ? styles.invalid : ""}`}
-            value={values.email}
-            onChange={(event) => update("email", event.target.value)}
-            autoComplete="email"
-            inputMode="email"
-            required
-            aria-required="true"
-            aria-invalid={invalid("email") || undefined}
-            aria-describedby={describedBy("email")}
-            placeholder="tu@email.com"
-          />
-          {errors.email ? (
-            <p className={styles.error} id={errorId("email")}>
-              {errors.email}
-            </p>
-          ) : null}
-        </div>
+      <fieldset className={styles.group}>
+        <legend className={styles.legend}>
+          <span className={styles.legendIndex} aria-hidden="true">
+            01
+          </span>
+          Sobre ti
+        </legend>
 
-        <div className={`${styles.field} ${styles.full}`}>
-          <label className={styles.label} htmlFor={fieldId("idea")}>
-            Tu idea <span aria-hidden="true">*</span>
-          </label>
-          <textarea
-            id={fieldId("idea")}
-            name="idea"
-            className={`${styles.textarea} ${invalid("idea") ? styles.invalid : ""}`}
-            value={values.idea}
-            onChange={(event) => update("idea", event.target.value)}
-            rows={5}
-            maxLength={siteConfig.booking.maxDescriptionLength}
-            required
-            aria-required="true"
-            aria-invalid={invalid("idea") || undefined}
-            aria-describedby={describedBy("idea")}
-            placeholder="Cuéntame qué tienes en mente: el motivo, la sensación que buscas y para qué momento."
-          />
-          <p className={styles.hint}>
-            {values.idea.length} / {siteConfig.booking.maxDescriptionLength} caracteres
-          </p>
-          {errors.idea ? (
-            <p className={styles.error} id={errorId("idea")}>
-              {errors.idea}
-            </p>
-          ) : null}
-        </div>
+        <div className={styles.grid}>
+          <div className={styles.field} data-filled={values.name.trim() ? "true" : "false"}>
+            <label className={styles.label} htmlFor={fieldId("name")}>
+              Nombre <span aria-hidden="true">*</span>
+            </label>
+            <input
+              id={fieldId("name")}
+              name="name"
+              type="text"
+              className={`${styles.control} ${invalid("name") ? styles.invalid : ""}`}
+              value={values.name}
+              onChange={(event) => update("name", event.target.value)}
+              autoComplete="name"
+              required
+              aria-required="true"
+              aria-invalid={invalid("name") || undefined}
+              aria-describedby={describedBy("name")}
+              placeholder="Tu nombre"
+            />
+            {errors.name ? (
+              <p className={styles.error} id={errorId("name")}>
+                {errors.name}
+              </p>
+            ) : null}
+          </div>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor={fieldId("style")}>
-            Estilo <span className={styles.optional}>opcional</span>
-          </label>
-          <select
-            id={fieldId("style")}
-            name="style"
-            className={styles.select}
-            value={values.style}
-            onChange={(event) => update("style", event.target.value as BookingStyle)}
+          <div className={styles.field} data-filled={values.email.trim() ? "true" : "false"}>
+            <label className={styles.label} htmlFor={fieldId("email")}>
+              Correo electrónico <span aria-hidden="true">*</span>
+            </label>
+            <input
+              id={fieldId("email")}
+              name="email"
+              type="email"
+              className={`${styles.control} ${invalid("email") ? styles.invalid : ""}`}
+              value={values.email}
+              onChange={(event) => update("email", event.target.value)}
+              autoComplete="email"
+              inputMode="email"
+              required
+              aria-required="true"
+              aria-invalid={invalid("email") || undefined}
+              aria-describedby={describedBy("email")}
+              placeholder="tu@email.com"
+            />
+            {errors.email ? (
+              <p className={styles.error} id={errorId("email")}>
+                {errors.email}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset className={styles.group}>
+        <legend className={styles.legend}>
+          <span className={styles.legendIndex} aria-hidden="true">
+            02
+          </span>
+          Tu idea
+        </legend>
+
+        <div className={styles.grid}>
+          <div
+            className={`${styles.field} ${styles.full}`}
+            data-filled={values.idea.trim() ? "true" : "false"}
           >
-            {styleOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
+            <label className={styles.label} htmlFor={fieldId("idea")}>
+              Tu idea <span aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id={fieldId("idea")}
+              name="idea"
+              className={`${styles.textarea} ${invalid("idea") ? styles.invalid : ""}`}
+              value={values.idea}
+              onChange={(event) => update("idea", event.target.value)}
+              rows={5}
+              maxLength={siteConfig.booking.maxDescriptionLength}
+              required
+              aria-required="true"
+              aria-invalid={invalid("idea") || undefined}
+              aria-describedby={describedBy("idea")}
+              placeholder="El motivo, la sensación que buscas, para qué momento… como se te ocurra."
+            />
+            <div className={styles.metaRow}>
+              <p className={styles.hint}>Escríbelo con tus palabras, sin tecnicismos.</p>
+              <p className={styles.hint} aria-hidden="true">
+                {values.idea.length} / {siteConfig.booking.maxDescriptionLength}
+              </p>
+            </div>
+            {errors.idea ? (
+              <p className={styles.error} id={errorId("idea")}>
+                {errors.idea}
+              </p>
+            ) : null}
+          </div>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor={fieldId("bodyArea")}>
-            Zona del cuerpo <span className={styles.optional}>opcional</span>
-          </label>
-          <input
-            id={fieldId("bodyArea")}
-            name="bodyArea"
-            type="text"
-            className={styles.control}
-            value={values.bodyArea}
-            onChange={(event) => update("bodyArea", event.target.value)}
-            placeholder="Antebrazo, costilla, espalda…"
-          />
-        </div>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={fieldId("style")}>
+              Estilo <span className={styles.optional}>opcional</span>
+            </label>
+            <select
+              id={fieldId("style")}
+              name="style"
+              className={styles.select}
+              value={values.style}
+              onChange={(event) => update("style", event.target.value as BookingStyle)}
+            >
+              {styleOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor={fieldId("size")}>
-            Tamaño aproximado <span className={styles.optional}>opcional</span>
-          </label>
-          <select
-            id={fieldId("size")}
-            name="size"
-            className={styles.select}
-            value={values.size}
-            onChange={(event) => update("size", event.target.value as BookingSize)}
-          >
-            {sizeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={fieldId("bodyArea")}>
+              Zona del cuerpo <span className={styles.optional}>opcional</span>
+            </label>
+            <input
+              id={fieldId("bodyArea")}
+              name="bodyArea"
+              type="text"
+              className={styles.control}
+              value={values.bodyArea}
+              onChange={(event) => update("bodyArea", event.target.value)}
+              placeholder="Antebrazo, costilla, espalda…"
+            />
+          </div>
         </div>
+      </fieldset>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor={fieldId("availability")}>
-            Disponibilidad <span className={styles.optional}>opcional</span>
-          </label>
-          <input
-            id={fieldId("availability")}
-            name="availability"
-            type="text"
-            className={styles.control}
-            value={values.availability}
-            onChange={(event) => update("availability", event.target.value)}
-            placeholder="Tardes, fines de semana…"
-          />
-        </div>
+      <fieldset className={styles.group}>
+        <legend className={styles.legend}>
+          <span className={styles.legendIndex} aria-hidden="true">
+            03
+          </span>
+          Si quieres afinar
+        </legend>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor={fieldId("budget")}>
-            Presupuesto orientativo <span className={styles.optional}>opcional</span>
-          </label>
-          <input
-            id={fieldId("budget")}
-            name="budget"
-            type="text"
-            className={styles.control}
-            value={values.budget}
-            onChange={(event) => update("budget", event.target.value)}
-            placeholder="Si tienes un rango en mente"
-          />
-        </div>
+        <div className={styles.grid}>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={fieldId("size")}>
+              Tamaño aproximado <span className={styles.optional}>opcional</span>
+            </label>
+            <select
+              id={fieldId("size")}
+              name="size"
+              className={styles.select}
+              value={values.size}
+              onChange={(event) => update("size", event.target.value as BookingSize)}
+            >
+              {sizeOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor={fieldId("references")}>
-            Referencias <span className={styles.optional}>opcional</span>
-          </label>
-          <input
-            id={fieldId("references")}
-            name="references"
-            type="text"
-            className={styles.control}
-            value={values.references}
-            onChange={(event) => update("references", event.target.value)}
-            placeholder="Enlaces o descripción de referencias"
-          />
-        </div>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={fieldId("availability")}>
+              Disponibilidad <span className={styles.optional}>opcional</span>
+            </label>
+            <input
+              id={fieldId("availability")}
+              name="availability"
+              type="text"
+              className={styles.control}
+              value={values.availability}
+              onChange={(event) => update("availability", event.target.value)}
+              placeholder="Tardes, fines de semana…"
+            />
+          </div>
 
-        <div className={`${styles.honeypot}`} aria-hidden="true">
-          <label htmlFor={fieldId("company")}>No rellenar</label>
-          <input
-            id={fieldId("company")}
-            name="company"
-            type="text"
-            tabIndex={-1}
-            autoComplete="off"
-            value={values.company}
-            onChange={(event) => update("company", event.target.value)}
-          />
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={fieldId("budget")}>
+              Presupuesto orientativo <span className={styles.optional}>opcional</span>
+            </label>
+            <input
+              id={fieldId("budget")}
+              name="budget"
+              type="text"
+              className={styles.control}
+              value={values.budget}
+              onChange={(event) => update("budget", event.target.value)}
+              placeholder="Si tienes un rango en mente"
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor={fieldId("references")}>
+              Referencias <span className={styles.optional}>opcional</span>
+            </label>
+            <input
+              id={fieldId("references")}
+              name="references"
+              type="text"
+              className={styles.control}
+              value={values.references}
+              onChange={(event) => update("references", event.target.value)}
+              placeholder="Enlaces o descripción de referencias"
+            />
+          </div>
         </div>
+      </fieldset>
+
+      <div className={`${styles.honeypot}`} aria-hidden="true">
+        <label htmlFor={fieldId("company")}>No rellenar</label>
+        <input
+          id={fieldId("company")}
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={values.company}
+          onChange={(event) => update("company", event.target.value)}
+        />
       </div>
 
-      <div className={styles.field}>
+      <div className={styles.consentBlock}>
         <label className={styles.consent} htmlFor={fieldId("consent")}>
           <input
             id={fieldId("consent")}
@@ -428,7 +489,7 @@ export function BookingForm() {
       <div className={styles.actions}>
         <button
           type="submit"
-          className="btn btn--inverse-solid btn--block"
+          className={`btn btn--solid btn--block ${styles.submit}`}
           disabled={status === "submitting"}
           aria-busy={status === "submitting" || undefined}
           data-testid="booking-submit"
@@ -436,7 +497,10 @@ export function BookingForm() {
           {status === "submitting" ? "Enviando…" : "Enviar mensaje"}
           <ArrowRight />
         </button>
-        <p className={styles.required}>* Campos obligatorios</p>
+        <div className={styles.actionsMeta}>
+          <p className={styles.required}>* Campos obligatorios</p>
+          <p className={styles.actionsNote}>Respondo personalmente a cada solicitud.</p>
+        </div>
       </div>
 
       <div aria-live="polite" aria-atomic="true" data-testid="booking-status">

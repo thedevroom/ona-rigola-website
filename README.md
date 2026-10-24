@@ -122,6 +122,12 @@ Tokens en `src/app/globals.css` (custom properties) alineados con la referencia:
   de menú) que queda alineado al borde. La barra gana línea y sombra suave al
   despegarse del borde superior. El menú se monta en un portal sobre `document.body`,
   así que ocupa la pantalla completa aunque la cabecera tenga `backdrop-filter`.
+- **Solicitud de cita como hoja de papel** (`app/contacto/page.tsx` +
+  `forms/booking-form.tsx`): sobre la banda de tinta, el formulario se presenta como una hoja
+  marfil con marco de registro, saludo editorial («Hola Ona, te cuento…») y tres bloques
+  numerados (sobre ti / tu idea / si quieres afinar). Los campos obligatorios marcan un punto
+  cuando ya tienen texto. En pantallas estrechas la hoja pasa delante del texto de contexto
+  para que el formulario quede lo más arriba posible.
 - **Pie editorial** (`site-footer.tsx`): cierre con el lema, tres índices numerados
   (Explorar / Legal / Contacto), rótulo tipográfico a sangre y línea final con firma,
   hora local de Barcelona y vuelta arriba.
@@ -285,7 +291,9 @@ Detalle completo en [`docs/qa-report.md`](docs/qa-report.md). Resumen:
 - `npm run format:check` — pasa.
 - `npm run build` — build de producción correcto (16 rutas estáticas, 4 fichas SSG, 1 endpoint).
 - `npm run test:e2e` — 60 pruebas en escritorio y móvil, todas correctas (2 omitidas por
-  ser específicas del otro dispositivo).
+  ser específicas del otro dispositivo). Tras el rediseño de `/contacto` la suite no se ha
+  podido reejecutar en este entorno (sin navegador); se ha validado con build, `check`,
+  contraste y revisión del HTML servido.
 - `npm run a11y:contrast` — todos los pares cumplen.
 - Inspección visual real con capturas a 360, 390, 430, 768, 1024, 1280, 1440 y 1920 px:
   sin desbordamiento horizontal, sin imágenes rotas y sin errores de consola.
