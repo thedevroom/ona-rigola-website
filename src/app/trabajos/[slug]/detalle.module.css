@@ -1,0 +1,219 @@
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: clamp(1.25rem, 3vw, 2rem);
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-55);
+}
+
+.breadcrumb a {
+  display: inline-block;
+  padding-block: 0.3rem;
+  color: var(--ink-55);
+  transition: color var(--dur) var(--ease);
+}
+
+.breadcrumb a:hover {
+  color: var(--ink);
+}
+
+.breadcrumbSeparator {
+  color: var(--ink-40);
+}
+
+.header {
+  padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.headerTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 1.5rem + 4.4vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.lede {
+  margin-top: 1.25rem;
+  font-family: var(--font-serif);
+  font-size: var(--text-lede);
+  line-height: 1.55;
+  font-weight: 300;
+  color: var(--ink-70);
+  max-width: 56ch;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  border-top: 1px solid var(--line-soft);
+  padding-top: 1.25rem;
+}
+
+.metaTerm {
+  font-family: var(--font-sans);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-55);
+  margin-bottom: 0.4rem;
+}
+
+.metaValue {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.section {
+  padding-block: var(--section-space-sm);
+}
+
+.galleryLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+.galleryItem {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--ivory-deep);
+  aspect-ratio: 4 / 5;
+}
+
+.galleryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  aspect-ratio: 4 / 5;
+  background-color: var(--ivory-deep);
+  color: var(--ink-40);
+  text-align: center;
+  padding: 2rem;
+}
+
+.placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0.85rem;
+  border: 1px solid rgba(var(--ink-rgb), 0.12);
+}
+
+.placeholderText {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-55);
+  max-width: 18ch;
+  line-height: 1.9;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: calc(var(--header-height) + 2rem);
+}
+
+.sidebarTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.bodyText {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.68;
+  color: var(--ink-70);
+  max-width: 46ch;
+}
+
+.fullNotice {
+  margin-top: 1.5rem;
+}
+
+.navRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.navGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2rem;
+}
+
+@media (max-width: 68rem) {
+  .galleryLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 46rem) {
+  .metaGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.galleryNote {
+  margin-top: 1rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-55);
+  max-width: 52ch;
+}

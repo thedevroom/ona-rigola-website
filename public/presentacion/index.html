@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Ona Rigola — Presentación</title>
+
+    <style>
+      @font-face {
+        font-family: "Display";
+        src: url("assets/fonts/serif-display.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Display";
+        src: url("assets/fonts/serif-display-italic.woff2") format("woff2");
+        font-weight: 400;
+        font-style: italic;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Reader";
+        src: url("assets/fonts/newsreader.woff2") format("woff2");
+        font-weight: 200 800;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Reader";
+        src: url("assets/fonts/newsreader-italic.woff2") format("woff2");
+        font-weight: 200 800;
+        font-style: italic;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Sans";
+        src: url("assets/fonts/sans.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: block;
+      }
+    </style>
+    <link rel="stylesheet" href="presentacion.css" />
+  </head>
+
+  <body>
+    <main class="stage" id="stage" aria-label="Presentación del sitio de Ona Rigola">
+      <div class="stage-inner" id="stageInner">
+        <div class="bg bg--ivory" id="bgIvory"></div>
+        <div class="bg bg--ink" id="bgInk"></div>
+        <div class="spotlight" id="spotlight"></div>
+
+        <!-- ============ INTRO ============ -->
+        <div class="intro" id="intro">
+          <p class="intro-top">
+            <span>ONA RIGOLA</span>
+            <span>TATUAJE · BARCELONA</span>
+          </p>
+          <div class="intro-title">
+            <span class="intro-line"><span>Ona</span></span>
+            <span class="intro-line intro-line--indent"><span>Rigola</span></span>
+          </div>
+          <div class="intro-meter">
+            <span class="intro-bar"><span id="introFill"></span></span>
+            <span class="intro-star" id="introStar">
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path
+                  d="M12 1.5c.9 5.2 2.9 8.6 10.5 10.5C14.9 13.9 12.9 17.3 12 22.5 11.1 17.3 9.1 13.9 1.5 12 9.1 10.1 11.1 6.7 12 1.5Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- ============ ORDENADOR ============ -->
+        <div class="device device--desktop" id="desktop">
+          <div class="mac">
+            <div class="mac-bar">
+              <span class="mac-dots"><i></i><i></i><i></i></span>
+              <span class="mac-url">onarigola.com</span>
+              <span class="mac-extra"></span>
+            </div>
+            <div class="mac-viewport">
+              <div class="mac-canvas" id="desktopCanvas">
+                <header class="d-header">
+                  <span class="d-wordmark">Ona Rigola</span>
+                  <nav class="d-nav">
+                    <span class="is-active">Inicio</span><span>Sobre mí</span><span>Trabajos</span
+                    ><span>Proceso</span>
+                  </nav>
+                  <span class="d-city">Barcelona <b>✦</b></span>
+                  <span class="d-cta">Solicita una cita <b>→</b></span>
+                </header>
+
+                <section class="d-hero">
+                  <div class="d-hero-copy">
+                    <p class="d-eyebrow"><i></i>Tatuadora independiente — Barcelona</p>
+                    <h1 class="d-title">Ona<br /><em>Rigola</em></h1>
+                    <div class="d-styles">
+                      <span><b>01</b> Línea fina</span><span><b>02</b> Blackwork</span
+                      ><span><b>03</b> Ornamental</span>
+                    </div>
+                    <p class="d-lede">
+                      Líneas delicadas y composiciones editoriales. Diseño cada pieza desde el
+                      dibujo, nunca desde la plantilla, para que funcione sobre el cuerpo y no solo
+                      sobre el papel.
+                    </p>
+                    <div class="d-actions">
+                      <span class="d-btn d-btn--solid">Solicita una cita <b>→</b></span>
+                      <span class="d-link">Ver trabajos seleccionados <b>→</b></span>
+                    </div>
+                  </div>
+                  <figure class="d-hero-media" data-parallax="26">
+                    <img src="assets/img/portrait.webp" alt="" />
+                    <figcaption><span>Ona Rigola</span><span>Barcelona</span></figcaption>
+                  </figure>
+                  <span class="d-index">01 / 04</span>
+                </section>
+
+                <section class="d-works">
+                  <div class="d-head">
+                    <span>Trabajos seleccionados <b>01 / 04</b></span>
+                    <span class="d-head-link">Ver el portfolio completo <b>→</b></span>
+                  </div>
+                  <div class="d-grid">
+                    <figure class="d-card" data-parallax="18">
+                      <img src="assets/img/work-1.webp" alt="" />
+                      <figcaption>
+                        <b>01</b> Botánica de línea fina <span>Línea fina</span>
+                      </figcaption>
+                    </figure>
+                    <figure class="d-card d-card--b" data-parallax="34">
+                      <img src="assets/img/work-3.webp" alt="" />
+                      <figcaption><b>02</b> Blackwork floral <span>Blackwork</span></figcaption>
+                    </figure>
+                    <figure class="d-card" data-parallax="14">
+                      <img src="assets/img/work-2.webp" alt="" />
+                      <figcaption>
+                        <b>03</b> Ramita de línea fina <span>Línea fina</span>
+                      </figcaption>
+                    </figure>
+                    <figure class="d-card d-card--b" data-parallax="42">
+                      <img src="assets/img/work-4.webp" alt="" />
+                      <figcaption>
+                        <b>04</b> Ornamental de clavícula <span>Ornamental</span>
+                      </figcaption>
+                    </figure>
+                  </div>
+                </section>
+
+                <section class="d-styles-section">
+                  <div class="d-head">
+                    <span>Estilos</span>
+                    <span class="d-head-link">Tres maneras de dibujar</span>
+                  </div>
+                  <div class="d-style-cols">
+                    <div>
+                      <p class="d-style-index">01</p>
+                      <p class="d-style-name">Línea fina</p>
+                      <p class="d-style-text">
+                        Trazo delicado y preciso, con composiciones ligeras que respiran sobre la
+                        piel.
+                      </p>
+                    </div>
+                    <div>
+                      <p class="d-style-index">02</p>
+                      <p class="d-style-name">Blackwork</p>
+                      <p class="d-style-text">
+                        Masas de negro y contrastes rotundos, para piezas de presencia gráfica.
+                      </p>
+                    </div>
+                    <div>
+                      <p class="d-style-index">03</p>
+                      <p class="d-style-name">Ornamental</p>
+                      <p class="d-style-text">
+                        Estructuras simétricas y motivos decorativos dibujados a medida.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="d-band">
+                  <div>
+                    <p class="d-band-eyebrow">Reserva / Contacto</p>
+                    <p class="d-band-title">Hagamos<br />que sea<br /><em>personal.</em></p>
+                    <p class="d-band-text">
+                      ¿Tienes una idea, una pregunta o simplemente quieres saludar? Escríbeme y
+                      valoramos juntas el siguiente paso.
+                    </p>
+                  </div>
+                  <div class="d-band-aside">
+                    <p><span>Solicitud</span><b>Formulario de cita</b></p>
+                    <p><span>Ubicación</span><b>Barcelona</b></p>
+                    <p><span>Respuesta</span><b>Personal, por correo</b></p>
+                    <span class="d-btn d-btn--light">Solicita una cita <b>→</b></span>
+                  </div>
+                </section>
+
+                <footer class="d-footer">
+                  <div class="d-footer-top">
+                    <div>
+                      <p class="d-footer-eyebrow">✦ Estudio independiente · Barcelona</p>
+                      <p class="d-footer-claim">Pequeños trazos.<br /><em>Grandes historias.</em></p>
+                    </div>
+                    <div class="d-footer-cols">
+                      <div><span>01 Explorar</span><p>Inicio</p><p>Sobre mí</p><p>Trabajos</p></div>
+                      <div><span>02 Legal</span><p>Privacidad</p><p>Aviso legal</p><p>Cookies</p></div>
+                      <div><span>03 Contacto</span><p>Formulario de cita</p><p>Barcelona</p></div>
+                    </div>
+                  </div>
+                  <p class="d-footer-mark">Ona <b>✦</b> <em>Rigola</em></p>
+                  <div class="d-footer-base">
+                    <span>ONA RIGOLA ✦ BARCELONA</span>
+                    <span>HORA LOCAL 17:43</span>
+                    <span>© 2026 · TODOS LOS DERECHOS RESERVADOS</span>
+                  </div>
+                </footer>
+              </div>
+            </div>
+          </div>
+          <div class="device-shadow"></div>
+        </div>
+
+        <!-- ============ MÓVIL ============ -->
+        <div class="device device--phone" id="phone">
+          <div class="phone">
+            <span class="phone-notch"></span>
+            <div class="phone-viewport">
+              <div class="phone-canvas" id="phoneCanvas">
+                <header class="m-header">
+                  <span class="m-wordmark">Ona Rigola</span>
+                  <span class="m-actions"><b class="m-pill">Cita →</b><i class="m-menu">☰</i></span>
+                </header>
+
+                <section class="m-hero">
+                  <img src="assets/img/portrait.webp" alt="" data-parallax="18" />
+                  <p class="m-caption"><span>Ona Rigola</span><span>Barcelona</span></p>
+                  <p class="m-title">ONA<br />RIGOLA</p>
+                  <p class="m-eyebrow">Artista del tatuaje · Barcelona</p>
+                  <p class="m-lede">
+                    Líneas delicadas y composiciones editoriales, dibujadas a medida para cada
+                    cuerpo.
+                  </p>
+                  <span class="m-btn">Solicita una cita <b>→</b></span>
+                </section>
+
+                <section class="m-works">
+                  <div class="m-head">
+                    <span>Trabajos <b>01 / 04</b></span>
+                    <span>Ver todo <b>→</b></span>
+                  </div>
+                  <figure class="m-card" data-parallax="10">
+                    <img src="assets/img/work-1.webp" alt="" />
+                    <figcaption><b>01</b> Botánica de línea fina</figcaption>
+                  </figure>
+                  <figure class="m-card" data-parallax="16">
+                    <img src="assets/img/work-3.webp" alt="" />
+                    <figcaption><b>02</b> Blackwork floral</figcaption>
+                  </figure>
+                  <figure class="m-card" data-parallax="10">
+                    <img src="assets/img/work-4.webp" alt="" />
+                    <figcaption><b>03</b> Ornamental de clavícula</figcaption>
+                  </figure>
+                </section>
+
+                <section class="m-contact">
+                  <p class="m-contact-eyebrow">Reserva / Contacto</p>
+                  <p class="m-contact-title">Hagamos que sea<br /><em>personal.</em></p>
+                  <div class="m-form">
+                    <p class="m-form-meta">
+                      <span>Formulario de cita</span><span>✦</span><span>Barcelona</span>
+                    </p>
+                    <p class="m-form-greet">Hola Ona,<br /><em>te cuento…</em></p>
+                    <label><span>Nombre *</span><i></i></label>
+                    <label><span>Correo electrónico *</span><i></i></label>
+                    <label class="m-form-area"><span>Tu idea *</span><i></i></label>
+                    <span class="m-form-button">Enviar mensaje →</span>
+                  </div>
+                </section>
+
+                <footer class="m-footer">
+                  <p class="m-footer-mark">Ona <b>✦</b> <em>Rigola</em></p>
+                  <p class="m-footer-base">ONA RIGOLA ✦ BARCELONA</p>
+                </footer>
+              </div>
+            </div>
+          </div>
+          <div class="device-shadow"></div>
+        </div>
+
+        <!-- ============ CAPÍTULO ============ -->
+        <p class="chapter" id="chapter">
+          <span id="chapterNum">01</span>
+          <span id="chapterName">Portada</span>
+        </p>
+
+        <!-- ============ CIERRE ============ -->
+        <div class="end" id="end">
+          <div class="end-inner">
+            <span class="end-star" id="endStar">
+              <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+                <path
+                  d="M12 1.5c.9 5.2 2.9 8.6 10.5 10.5C14.9 13.9 12.9 17.3 12 22.5 11.1 17.3 9.1 13.9 1.5 12 9.1 10.1 11.1 6.7 12 1.5Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <p class="end-line"><span id="endLine1">Hecho con Cristian,</span></p>
+            <p class="end-line end-line--italic"><span id="endLine2">con cariño 😝</span></p>
+            <p class="end-meta" id="endMeta">onarigola.com</p>
+          </div>
+          <button class="end-replay" id="replay" type="button">
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+              <path
+                d="M20 12a8 8 0 1 1-2.4-5.7M20 4v4.5h-4.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.3"
+              />
+            </svg>
+            Volver a ver
+          </button>
+        </div>
+
+        <div class="grain" aria-hidden="true"></div>
+        <div class="vignette" aria-hidden="true"></div>
+
+        <!-- Corcho de precarga: mantiene el fondo hasta que todo está listo. -->
+        <div class="boot" id="boot"></div>
+      </div>
+    </main>
+
+    <div class="hud" id="hud" data-playing="true" data-hidden="false">
+      <button class="hud-play" id="play" type="button" aria-label="Pausar la presentación">
+        <svg class="icon-pause" viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
+          <rect x="7" y="5" width="3" height="14" fill="currentColor" />
+          <rect x="14" y="5" width="3" height="14" fill="currentColor" />
+        </svg>
+        <svg class="icon-play" viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
+          <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
+        </svg>
+      </button>
+
+      <div
+        class="hud-track"
+        id="track"
+        role="slider"
+        tabindex="0"
+        aria-label="Avance de la presentación"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+      >
+        <span class="hud-fill" id="fill"></span>
+        <span class="hud-knob" id="knob"></span>
+        <span class="hud-ticks" id="ticks" aria-hidden="true"></span>
+      </div>
+
+      <span class="hud-time" id="time">00:00 / 01:24</span>
+      <button class="hud-btn" id="fullscreen" type="button" aria-label="Pantalla completa">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+          <path
+            d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <noscript>
+      <p class="noscript">
+        Esta presentación necesita JavaScript. El sitio real está en <a href="/">onarigola.com</a>.
+      </p>
+    </noscript>
+
+    <script src="presentacion.js" defer></script>
+  </body>
+</html>

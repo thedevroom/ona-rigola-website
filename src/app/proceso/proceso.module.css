@@ -1,0 +1,171 @@
+.section {
+  padding-block: var(--section-space);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: calc(var(--header-height) + 2rem);
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+.asideText {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-55);
+  max-width: 32ch;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line-strong);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.stepIndex {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-55);
+  font-variant-numeric: tabular-nums;
+  padding-top: 0.35rem;
+}
+
+.stepBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.stepTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.stepSummary {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--ink-70);
+  max-width: 44ch;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.25rem;
+}
+
+.detail {
+  position: relative;
+  padding-left: 1.1rem;
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-55);
+  max-width: 52ch;
+}
+
+.detail::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 0.5rem;
+  height: 1px;
+  background-color: var(--line-strong);
+}
+
+.note {
+  margin-top: 1.75rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-55);
+  max-width: 52ch;
+}
+
+.faqSection {
+  padding-block: var(--section-space-sm);
+  background-color: var(--ivory-deep);
+}
+
+.faqLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+@media (max-width: 68rem) {
+  .layout,
+  .faqLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aside {
+    position: static;
+  }
+}
+
+.miniFaq {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line-strong);
+}
+
+.miniFaqItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-block: 1.4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.miniQuestion {
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.miniAnswer {
+  font-family: var(--font-serif);
+  font-size: 0.9688rem;
+  line-height: 1.6;
+  color: var(--ink-70);
+  max-width: 54ch;
+}
+
+.miniFooter {
+  margin-top: 1.75rem;
+}
