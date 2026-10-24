@@ -96,6 +96,12 @@ body[data-scroll-locked="true"] {
   overflow: hidden;
 }
 
+/* Mientras se arrastra la barra a medida, el puntero no debe seleccionar texto. */
+body[data-scroll-dragging="true"] {
+  user-select: none;
+  cursor: grabbing;
+}
+
 h1,
 h2,
 h3,
@@ -492,6 +498,48 @@ ol {
   font-size: 0.86em;
   letter-spacing: 0.01em;
   overflow-wrap: anywhere;
+}
+
+/* --- Barra de desplazamiento -------------------------------------------- */
+
+/* Respaldo nativo (Firefox, Safari, táctil): pastilla negra con aire. */
+html {
+  scrollbar-color: var(--ink) transparent;
+  scrollbar-width: thin;
+}
+
+html::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: var(--ivory-deep);
+  border-left: 1px solid var(--line-soft);
+}
+
+html::-webkit-scrollbar-thumb {
+  min-height: 48px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-color: var(--ink);
+  background-clip: padding-box;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  border-width: 2px;
+  background-color: var(--ink-strong);
+}
+
+/* Cuando el script activa la barra a medida, la nativa desaparece para no
+   duplicar el control. Sin JavaScript se mantiene la barra del navegador. */
+html[data-scrollbar="custom"] {
+  scrollbar-width: none;
+}
+
+html[data-scrollbar="custom"]::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 /* --- Movimiento --------------------------------------------------------- */

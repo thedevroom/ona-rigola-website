@@ -218,3 +218,78 @@ test.describe("Accesibilidad y metadatos", () => {
     expect(emptyHrefs).toBe(0);
   });
 });
+
+test.describe("Portada de carga, pie y barra a medida", () => {
+  test("la portada de carga no bloquea la interacción y se retira sola", async ({ page }) => {
+    await page.goto("/");
+    const preloader = page.getByTestId("preloader");
+
+    if (await preloader.count()) {
+      await expect(preloader).toHaveCSS("pointer-events", "none");
+      await expect(preloader).toHaveAttribute("aria-hidden", "true");
+    }
+
+    await expect(preloader).toHaveCount(0, { timeout: 6000 });
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  });
+
+  test("con movimiento reducido no se muestra la portada de carga", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    await expect(page.getByTestId("preloader")).toHaveCount(0, { timeout: 2000 });
+  });
+
+  test("el pie reúne navegación, hora local y vuelta arriba", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByTestId("preloader")).toHaveCount(0, { timeout: 6000 });
+
+    const footer = page.getByRole("contentinfo");
+    await expect(footer.getByRole("link", { name: "Privacidad" })).toBeVisible();
+    await expect(footer.getByRole("link", { name: "Formulario de cita" })).toBeVisible();
+    await expect(footer).toContainText(/hora local/i);
+    await expect(footer).toContainText(/ona rigola/i);
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await footer.getByRole("button", { name: /volver arriba/i }).click();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(80);
+  });
+
+  test("la barra a medida sigue el desplazamiento y responde al teclado", async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== "escritorio", "Solo en escritorio");
+
+    await page.goto("/");
+    await expect(page.getByTestId("preloader")).toHaveCount(0, { timeout: 6000 });
+
+    const rail = page.getByRole("scrollbar", { name: /desplazamiento de la página/i });
+    await expect(rail).toBeVisible();
+
+    await page.evaluate(() => window.scrollTo(0, 1200));
+    await expect
+      .poll(async () => Number(await rail.getAttribute("aria-valuenow")))
+      .toBeGreaterThan(5);
+
+    await rail.focus();
+    await page.keyboard.press("End");
+    await expect
+      .poll(async () => Number(await rail.getAttribute("aria-valuenow")))
+      .toBeGreaterThan(95);
+
+    await page.keyboard.press("Home");
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(80);
+  });
+
+  test("en móvil se conserva la barra nativa del navegador", async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== "movil", "Solo en móvil");
+
+    await page.goto("/");
+    await expect(page.getByTestId("preloader")).toHaveCount(0, { timeout: 6000 });
+    await expect(page.getByRole("scrollbar")).toBeHidden();
+
+    const nativeWidth = await page.evaluate(
+      () => getComputedStyle(document.documentElement).scrollbarWidth,
+    );
+    expect(nativeWidth).not.toBe("none");
+  });
+});

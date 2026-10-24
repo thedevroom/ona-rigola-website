@@ -109,6 +109,23 @@ Tokens en `src/app/globals.css` (custom properties) alineados con la referencia:
 - **Movimiento**: transiciones de 140–240 ms con `--ease`; todo desactivado bajo
   `prefers-reduced-motion: reduce`.
 
+### Piezas de interfaz a medida
+
+- **Portada de carga** (`src/components/ui/preloader.tsx`): lámina de tinta con el rótulo
+  «Ona Rigola», una marca de agua en estrella y un contador real que solo llega a 100
+  cuando el documento ha cargado. Sale con un corte de cortina (`clip-path`). Es
+  decorativa (`aria-hidden`), no bloquea la interacción (`pointer-events: none`), no
+  retiene más de 2,6 s, desaparece con `prefers-reduced-motion` y tiene una salida de
+  seguridad CSS si el JavaScript no llega a ejecutarse.
+- **Pie editorial** (`site-footer.tsx`): cierre con el lema, tres índices numerados
+  (Explorar / Legal / Contacto), rótulo tipográfico a sangre y línea final con firma,
+  hora local de Barcelona y vuelta arriba.
+- **Barra de desplazamiento a medida** (`custom-scrollbar.tsx`): pista con regla de
+  marcas, pastilla negra con muescas de agarre, lectura de porcentaje, arrastre con
+  Pointer Events y clic en la pista. Accesible por teclado (`role="scrollbar"`, flechas,
+  Av Pág/Re Pág, Inicio/Fin). Solo se activa en escritorio con puntero fino: en táctil y
+  en pantallas estrechas se conserva la barra nativa, estilizada en `globals.css`.
+
 Contraste verificado con `npm run a11y:contrast` (script propio que calcula ratios WCAG
 sobre los pares reales). Todos los pares de texto superan 4.5:1; los elementos de
 interfaz superan 3:1.
@@ -262,9 +279,11 @@ Detalle completo en [`docs/qa-report.md`](docs/qa-report.md). Resumen:
 - `npm run lint` — pasa sin errores ni avisos.
 - `npm run format:check` — pasa.
 - `npm run build` — build de producción correcto (16 rutas estáticas, 4 fichas SSG, 1 endpoint).
-- `npm run test:e2e` — 46 pruebas en escritorio y móvil, todas correctas.
+- `npm run test:e2e` — 56 pruebas en escritorio y móvil, todas correctas (2 omitidas por
+  ser específicas del otro dispositivo).
 - `npm run a11y:contrast` — todos los pares cumplen.
-- Inspección visual real con capturas a 360, 390, 430, 768, 1024, 1280, 1440 y 1920 px.
+- Inspección visual real con capturas a 360, 390, 430, 768, 1024, 1280, 1440 y 1920 px:
+  sin desbordamiento horizontal, sin imágenes rotas y sin errores de consola.
 
 ---
 
@@ -339,6 +358,11 @@ No se declaran volúmenes de búsqueda ni competencia: no se han obtenido datos 
 - Menú móvil como `role="dialog" aria-modal`, trampa de foco, cierre con Escape y
   devolución del foco al botón que lo abrió.
 - Objetivos táctiles ≥ 24 px (la mayoría ≥ 44 px); enlaces en línea exceptuados por WCAG.
+- La barra de desplazamiento a medida es un control real: `role="scrollbar"`, valor
+  anunciado, foco visible y teclado completo. La nativa solo se oculta cuando el script
+  confirma que la sustituye; en táctil nunca se oculta.
+- La portada de carga es `aria-hidden`, no captura clics y no existe con
+  `prefers-reduced-motion: reduce`.
 - `prefers-reduced-motion` respetado globalmente.
 - Contraste: verificado con script propio (`npm run a11y:contrast`).
 
@@ -351,7 +375,10 @@ No se declaran volúmenes de búsqueda ni competencia: no se han obtenido datos 
 - Imágenes servidas en AVIF/WebP por `next/image` (formatos habilitados en `next.config.ts`).
 - Tipografías autoalojadas con `display: swap` y `preload` solo de las tres usadas
   realmente.
-- JS cliente mínimo (tres islas). El resto es HTML del servidor.
+- JS cliente mínimo (islas pequeñas: cabecera, menú móvil, pie, portada de carga y barra
+  a medida). El resto es HTML del servidor.
+- La barra a medida escucha `scroll` de forma pasiva y agrupa las lecturas en un solo
+  `requestAnimationFrame`; no usa librerías ni `will-change` permanentes.
 - Sin animaciones de scroll, sliders ni librerías de movimiento.
 - Sin layout shift: todas las imágenes declaran `width`/`height` o `aspect-ratio`.
 
@@ -373,3 +400,9 @@ diseño; no se han medido en campo desde este entorno.
 5. **Una sola instancia** para el límite de envíos por IP (memoria del proceso).
 6. **Solo español**: el contenido está centralizado para permitir una versión catalana o
    inglesa futura, sin implementarla a medias.
+7. **La portada de carga se muestra en cada carga completa del documento**, no en la
+   navegación interna (el layout no se remonta). Dura entre 1,1 y 2,6 s según lo que tarde
+   en cargar la página; si se prefiere eliminarla, basta con quitar `<Preloader />` de
+   `src/app/layout.tsx`.
+8. **La barra a medida convive con la nativa** como respaldo: si el JavaScript no se
+   ejecuta, se mantiene la barra del navegador, estilizada en `globals.css`.

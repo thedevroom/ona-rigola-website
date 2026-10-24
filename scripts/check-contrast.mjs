@@ -21,6 +21,7 @@ const colors = {
   ivoryDeep: token("ivory-deep"),
   paper: token("paper"),
   ink: token("ink"),
+  inkStrong: token("ink-strong"),
   ink70: token("ink-70"),
   ink55: token("ink-55"),
   ink40: token("ink-40"),
@@ -70,6 +71,24 @@ const pairs = [
   ["Anillo de foco sobre marfil", colors.focus, colors.ivory, 3],
   ["Bordes interactivos", colors.ink55, colors.ivory, 3],
   ["Texto decorativo (solo iconos)", colors.ink40, colors.ivory, 0],
+  [
+    "Portada de carga · etiquetas",
+    composite(colors.ivory, 0.5, colors.inkStrong),
+    colors.inkStrong,
+    4.5,
+  ],
+  [
+    "Portada de carga · línea de estilo",
+    composite(colors.ivory, 0.62, colors.inkStrong),
+    colors.inkStrong,
+    4.5,
+  ],
+  [
+    "Portada de carga · unidad del contador",
+    composite(colors.ivory, 0.45, colors.inkStrong),
+    colors.inkStrong,
+    0,
+  ],
 ];
 
 let failures = 0;

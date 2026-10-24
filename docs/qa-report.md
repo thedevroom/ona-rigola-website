@@ -41,10 +41,15 @@ Cobertura:
 11. El endpoint rechaza payloads inválidos con `400` y errores por campo.
 12. El portfolio muestra imágenes reales (todas cargan, `naturalWidth` > 300) y cada
     tarjeta enlaza con su ficha.
-13. La imagen principal tiene `alt` descriptivo y no hay errores de consola ni de red.
-14. Títulos, descripciones (> 60 caracteres) y canónicas únicas en las 9 páginas.
-15. Todos los bloques JSON-LD se parsean como JSON válido.
-16. No existen enlaces `href="#"` ni `href=""`.
+13. La portada de carga no captura la interacción (`pointer-events: none`), va marcada
+    como `aria-hidden` y se retira sola; con `prefers-reduced-motion: reduce` no aparece.
+14. El pie tiene navegación completa, hora local y una vuelta arriba que funciona.
+15. La barra a medida aparece en escritorio, actualiza `aria-valuenow` al desplazar y
+    responde a Inicio/Fin; en móvil se conserva la nativa.
+16. La imagen principal tiene `alt` descriptivo y no hay errores de consola ni de red.
+17. Títulos, descripciones (> 60 caracteres) y canónicas únicas en las 9 páginas.
+18. Todos los bloques JSON-LD se parsean como JSON válido.
+19. No existen enlaces `href="#"` ni `href=""`.
 
 ### Nota sobre el entorno de ejecución de Playwright
 

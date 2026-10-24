@@ -86,3 +86,20 @@ export function CloseIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+/** Flecha ascendente: vuelta al inicio de la página. */
+export function ArrowUp({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width="10"
+      height="14"
+      viewBox="0 0 10 14"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M5 13V1.6M1 5.4 5 1.2l4 4.2" stroke="currentColor" strokeWidth="1" />
+    </svg>
+  );
+}

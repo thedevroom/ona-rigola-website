@@ -1,0 +1,218 @@
+/* ==========================================================================
+   Barra de desplazamiento a medida
+   Solo se muestra en escritorio con puntero fino; en el resto de casos se
+   conserva la barra nativa (estilizada en globals.css).
+   ========================================================================== */
+
+.root {
+  --rail-width: 22px;
+  --rail-inset: 16px;
+  --thumb-w: 6px;
+  --thumb-h: 20%;
+  --thumb-y: 0px;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 70;
+  width: var(--rail-width);
+  height: 100dvh;
+  pointer-events: none;
+  opacity: 0;
+  display: none;
+  transition: opacity 420ms var(--ease);
+}
+
+/* Solo se dibuja cuando el script ha confirmado que sustituye a la nativa. */
+:global(html[data-scrollbar="custom"]) .root {
+  display: block;
+}
+
+.root[data-visible="true"] {
+  opacity: 1;
+}
+
+.root[data-idle="true"] {
+  opacity: 0.55;
+}
+
+.root[data-idle="false"],
+.root:hover,
+.root:focus-visible {
+  opacity: 1;
+}
+
+.track {
+  position: absolute;
+  inset: var(--rail-inset) 0;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: default;
+}
+
+/* Regla vertical fina, siempre presente como referencia. */
+.line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: calc(var(--thumb-w) / 2 + 6px);
+  width: 1px;
+  background-color: rgba(125, 123, 113, 0.32);
+  transition:
+    background-color var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+
+/* Marcas de medición: aparecen al interactuar con la barra. */
+.ticks {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 12px;
+  width: 4px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(125, 123, 113, 0.55) 0 1px,
+    transparent 1px 26px
+  );
+  opacity: 0;
+  transition: opacity 260ms var(--ease);
+}
+
+.root:hover .ticks,
+.root:focus-visible .ticks,
+.root[data-dragging="true"] .ticks {
+  opacity: 0.55;
+}
+
+.root:hover .line,
+.root:focus-visible .line {
+  background-color: rgba(125, 123, 113, 0.5);
+}
+
+/* --- Pastilla ------------------------------------------------------------ */
+
+.thumb {
+  position: absolute;
+  top: 0;
+  right: 6px;
+  width: var(--thumb-w);
+  height: var(--thumb-h);
+  transform: translate3d(0, var(--thumb-y), 0);
+  border-radius: 999px;
+  background-color: var(--ink-strong);
+  box-shadow:
+    0 0 0 1px rgba(240, 237, 228, 0.75),
+    0 0 0 4px rgba(240, 237, 228, 0.06),
+    0 2px 12px rgba(15, 14, 10, 0.22);
+  cursor: grab;
+  transition:
+    width 220ms var(--ease),
+    right 220ms var(--ease),
+    box-shadow 220ms var(--ease),
+    background-color 220ms var(--ease);
+  will-change: transform;
+}
+
+.root:hover .thumb,
+.root:focus-visible .thumb,
+.root[data-dragging="true"] .thumb {
+  width: 10px;
+  right: 4px;
+  box-shadow:
+    0 0 0 1px rgba(240, 237, 228, 0.85),
+    0 0 0 5px rgba(240, 237, 228, 0.08),
+    0 3px 16px rgba(15, 14, 10, 0.28);
+}
+
+.root[data-dragging="true"] .thumb {
+  cursor: grabbing;
+  background-color: var(--ink);
+}
+
+/* Agarre: dos muescas de marfil en el centro de la pastilla. */
+.grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  background-image:
+    linear-gradient(to bottom, rgba(240, 237, 228, 0.75) 0 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(240, 237, 228, 0.75) 0 1px, transparent 1px);
+  background-size:
+    100% 1px,
+    100% 1px;
+  background-position:
+    0 0,
+    0 9px;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+}
+
+.root:hover .grip,
+.root:focus-visible .grip,
+.root[data-dragging="true"] .grip {
+  opacity: 1;
+}
+
+/* --- Lectura de porcentaje ---------------------------------------------- */
+
+.readout {
+  position: absolute;
+  top: calc(var(--thumb-y) + var(--thumb-h) / 2);
+  right: 26px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  padding: 6px 7px 5px;
+  transform: translateY(-50%) translateX(6px);
+  background-color: var(--ink-strong);
+  color: var(--ivory);
+  font-family: var(--font-sans);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(240, 237, 228, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 200ms var(--ease),
+    transform 260ms var(--ease);
+}
+
+.readoutUnit {
+  font-size: 0.5rem;
+  color: rgba(240, 237, 228, 0.5);
+}
+
+.root:hover .readout,
+.root:focus-visible .readout,
+.root[data-dragging="true"] .readout {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* --- Foco --------------------------------------------------------------- */
+
+.root:focus-visible {
+  outline: none;
+}
+
+.root:focus-visible .thumb {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* --- Solo escritorio con puntero fino ----------------------------------- */
+
+@media (max-width: 63.99rem) {
+  .root {
+    display: none;
+  }
+}
