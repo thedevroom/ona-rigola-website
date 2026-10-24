@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
 import { ArrowRight } from "@/components/ui/icons";
 import { MobileMenu } from "@/components/layout/mobile-menu";
@@ -18,14 +19,36 @@ const desktopNav = [
 /**
  * Cabecera editorial.
  *
- * Es un Client Component porque necesita conocer la ruta activa para marcar el
- * enlace actual (`aria-current`). No contiene estado de scroll ni animaciones.
+ * Client Component porque necesita la ruta activa (`aria-current`) y un único
+ * umbral de scroll: la barra gana una línea y una sombra suave al despegarse del
+ * borde superior, sin animaciones ni cálculos por fotograma.
  */
 export function SiteHeader() {
   const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let frame: number | null = null;
+
+    const onScroll = () => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = null;
+        setScrolled(window.scrollY > 12);
+      });
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
+  }, []);
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} data-scrolled={scrolled ? "true" : "false"}>
       <div className={styles.shell}>
         <Link href="/" className={styles.wordmark} aria-label={`${siteConfig.name} — inicio`}>
           {siteConfig.wordmark}
@@ -62,8 +85,16 @@ export function SiteHeader() {
               ✦
             </span>
           </span>
-          <Link href="/contacto" className={`btn ${styles.cta}`}>
-            Solicita una cita
+          <Link
+            href="/contacto"
+            className={`btn ${styles.cta}`}
+            aria-label="Solicita una cita"
+            data-testid="header-cta"
+          >
+            <span className={styles.ctaFull}>Solicita una cita</span>
+            <span className={styles.ctaShort} aria-hidden="true">
+              Cita
+            </span>
             <ArrowRight />
           </Link>
           <MobileMenu />

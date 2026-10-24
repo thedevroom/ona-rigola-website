@@ -59,14 +59,14 @@ export function MenuIcon({ className }: IconProps) {
   return (
     <svg
       className={className}
-      width="22"
+      width="24"
       height="14"
-      viewBox="0 0 22 14"
+      viewBox="0 0 24 14"
       fill="none"
       aria-hidden="true"
       focusable="false"
     >
-      <path d="M0 1h22M0 7h22M0 13h22" stroke="currentColor" strokeWidth="1" />
+      <path d="M0 1h24M0 7h15M0 13h24" stroke="currentColor" strokeWidth="1" />
     </svg>
   );
 }

@@ -2,10 +2,23 @@
   display: none;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-right: -0.6rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: -0.2rem;
   color: var(--ink);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.menuButton:hover,
+.menuButton[aria-expanded="true"] {
+  background-color: var(--ink);
+  border-color: var(--ink);
+  color: var(--ivory);
 }
 
 @media (max-width: 68rem) {
@@ -22,7 +35,7 @@
   flex-direction: column;
   background-color: var(--ivory);
   color: var(--ink);
-  padding: 0.6rem var(--gutter) 1.75rem;
+  padding: 0.6rem var(--gutter) max(1.75rem, env(safe-area-inset-bottom));
   overflow-y: auto;
   animation: overlayIn 220ms var(--ease);
 }
@@ -54,9 +67,10 @@
 .closeButton {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding-left: 0.5rem;
   margin-right: -0.6rem;
 }
 

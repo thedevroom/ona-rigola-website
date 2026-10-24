@@ -117,6 +117,11 @@ Tokens en `src/app/globals.css` (custom properties) alineados con la referencia:
   decorativa (`aria-hidden`), no bloquea la interacción (`pointer-events: none`), no
   retiene más de 2,6 s, desaparece con `prefers-reduced-motion` y tiene una salida de
   seguridad CSS si el JavaScript no llega a ejecutarse.
+- **Cabecera** (`site-header.tsx`): firma, navegación y ciudad en escritorio; en
+  móvil se reduce a la firma y un bloque de acciones (pastilla «Cita» + botón circular
+  de menú) que queda alineado al borde. La barra gana línea y sombra suave al
+  despegarse del borde superior. El menú se monta en un portal sobre `document.body`,
+  así que ocupa la pantalla completa aunque la cabecera tenga `backdrop-filter`.
 - **Pie editorial** (`site-footer.tsx`): cierre con el lema, tres índices numerados
   (Explorar / Legal / Contacto), rótulo tipográfico a sangre y línea final con firma,
   hora local de Barcelona y vuelta arriba.
@@ -279,7 +284,7 @@ Detalle completo en [`docs/qa-report.md`](docs/qa-report.md). Resumen:
 - `npm run lint` — pasa sin errores ni avisos.
 - `npm run format:check` — pasa.
 - `npm run build` — build de producción correcto (16 rutas estáticas, 4 fichas SSG, 1 endpoint).
-- `npm run test:e2e` — 56 pruebas en escritorio y móvil, todas correctas (2 omitidas por
+- `npm run test:e2e` — 60 pruebas en escritorio y móvil, todas correctas (2 omitidas por
   ser específicas del otro dispositivo).
 - `npm run a11y:contrast` — todos los pares cumplen.
 - Inspección visual real con capturas a 360, 390, 430, 768, 1024, 1280, 1440 y 1920 px:

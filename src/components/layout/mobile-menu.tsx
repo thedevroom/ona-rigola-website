@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { mainNavigation, legalNavigation, siteConfig } from "@/config/site";
 import { CloseIcon, MenuIcon } from "@/components/ui/icons";
 import styles from "./mobile-menu.module.css";
@@ -84,84 +85,87 @@ export function MobileMenu() {
         <MenuIcon />
       </button>
 
-      {open ? (
-        <div
-          ref={panelRef}
-          id="menu-movil"
-          className={styles.overlay}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={titleId}
-        >
-          <div className={styles.topBar}>
-            <span className={styles.wordmark} id={titleId}>
-              {siteConfig.wordmark}
-            </span>
-            <button
-              ref={closeRef}
-              type="button"
-              className={styles.closeButton}
-              onClick={close}
-              aria-label="Cerrar menú de navegación"
-              data-testid="mobile-menu-close"
+      {open
+        ? createPortal(
+            <div
+              ref={panelRef}
+              id="menu-movil"
+              className={styles.overlay}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={titleId}
             >
-              <span className={styles.closeLabel} aria-hidden="true">
-                Cerrar
-              </span>
-              <CloseIcon />
-            </button>
-          </div>
+              <div className={styles.topBar}>
+                <span className={styles.wordmark} id={titleId}>
+                  {siteConfig.wordmark}
+                </span>
+                <button
+                  ref={closeRef}
+                  type="button"
+                  className={styles.closeButton}
+                  onClick={close}
+                  aria-label="Cerrar menú de navegación"
+                  data-testid="mobile-menu-close"
+                >
+                  <span className={styles.closeLabel} aria-hidden="true">
+                    Cerrar
+                  </span>
+                  <CloseIcon />
+                </button>
+              </div>
 
-          <div className={styles.body}>
-            <nav aria-label="Navegación móvil">
-              <ul className={styles.list}>
-                {mainNavigation.map((item, index) => {
-                  const active =
-                    item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-                  return (
-                    <li key={item.href} className={styles.item}>
+              <div className={styles.body}>
+                <nav aria-label="Navegación móvil">
+                  <ul className={styles.list}>
+                    {mainNavigation.map((item, index) => {
+                      const active =
+                        item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                      return (
+                        <li key={item.href} className={styles.item}>
+                          <Link
+                            href={item.href}
+                            className={`${styles.link} ${active ? styles.linkActive : ""}`}
+                            aria-current={active ? "page" : undefined}
+                            onClick={close}
+                          >
+                            {item.label}
+                            <span className={styles.number} aria-hidden="true">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+
+                <div className={styles.aside}>
+                  <Link href="/contacto" className="btn btn--solid btn--block" onClick={close}>
+                    Solicita una cita
+                  </Link>
+                  <div className={styles.asideRow}>
+                    <span>{siteConfig.city}</span>
+                    <span aria-hidden="true">✦</span>
+                    <span>{siteConfig.roleShort}</span>
+                  </div>
+                  <div className={styles.legalLinks}>
+                    {legalNavigation.map((item) => (
                       <Link
+                        key={item.href}
                         href={item.href}
-                        className={`${styles.link} ${active ? styles.linkActive : ""}`}
-                        aria-current={active ? "page" : undefined}
+                        className={styles.legalLink}
                         onClick={close}
                       >
                         {item.label}
-                        <span className={styles.number} aria-hidden="true">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
                       </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-
-            <div className={styles.aside}>
-              <Link href="/contacto" className="btn btn--solid btn--block" onClick={close}>
-                Solicita una cita
-              </Link>
-              <div className={styles.asideRow}>
-                <span>{siteConfig.city}</span>
-                <span aria-hidden="true">✦</span>
-                <span>{siteConfig.roleShort}</span>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className={styles.legalLinks}>
-                {legalNavigation.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={styles.legalLink}
-                    onClick={close}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

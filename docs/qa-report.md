@@ -46,10 +46,12 @@ Cobertura:
 14. El pie tiene navegación completa, hora local y una vuelta arriba que funciona.
 15. La barra a medida aparece en escritorio, actualiza `aria-valuenow` al desplazar y
     responde a Inicio/Fin; en móvil se conserva la nativa.
-16. La imagen principal tiene `alt` descriptivo y no hay errores de consola ni de red.
-17. Títulos, descripciones (> 60 caracteres) y canónicas únicas en las 9 páginas.
-18. Todos los bloques JSON-LD se parsean como JSON válido.
-19. No existen enlaces `href="#"` ni `href=""`.
+16. En móvil la cabecera mantiene firma, cita y menú visibles, y el menú ocupa la
+    pantalla completa con el cierre dentro del viewport.
+17. La imagen principal tiene `alt` descriptivo y no hay errores de consola ni de red.
+18. Títulos, descripciones (> 60 caracteres) y canónicas únicas en las 9 páginas.
+19. Todos los bloques JSON-LD se parsean como JSON válido.
+20. No existen enlaces `href="#"` ni `href=""`.
 
 ### Nota sobre el entorno de ejecución de Playwright
 

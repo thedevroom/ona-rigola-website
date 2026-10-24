@@ -52,10 +52,13 @@
 /* --- Marca de agua ------------------------------------------------------- */
 
 .watermark {
+  --star-size: min(46vh, 28vw);
+
   position: absolute;
   top: 46%;
   right: 6vw;
   display: block;
+  width: var(--star-size);
   color: var(--ivory);
   opacity: 0.045;
   transform: translateY(-50%);
@@ -64,7 +67,7 @@
 }
 
 .watermark svg {
-  width: min(46vh, 28vw);
+  width: 100%;
   height: auto;
 }
 
@@ -198,13 +201,49 @@
   }
 }
 
-@media (max-width: 30rem) {
-  .head {
-    font-size: 0.5rem;
-    letter-spacing: 0.2em;
+/* --- Composición en móvil y tableta vertical ----------------------------- */
+
+@media (max-width: 56rem) {
+  .frame {
+    padding: 1.35rem var(--gutter) max(1.6rem, env(safe-area-inset-bottom));
   }
 
+  .head {
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+  }
+
+  .watermark {
+    --star-size: min(25vh, 46vw);
+
+    top: 25%;
+    right: auto;
+    left: calc(50% - var(--star-size) / 2);
+  }
+
+  /* El rótulo se centra en la lámina en lugar de apoyarse en el pie. */
   .title {
-    font-size: clamp(3.2rem, 17vw, 5rem);
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 0;
+    font-size: clamp(4.25rem, 20vw, 6.5rem);
+  }
+
+  .lineIndent {
+    padding-left: 0.1em;
+  }
+
+  .caption {
+    margin-top: 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .meterRow {
+    gap: 0.9rem;
+    margin-top: 0;
+  }
+
+  .readout {
+    min-width: 4.25rem;
   }
 }

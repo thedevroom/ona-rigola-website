@@ -280,6 +280,35 @@ test.describe("Portada de carga, pie y barra a medida", () => {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(80);
   });
 
+  test("la cabecera móvil mantiene firma, cita y menú", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await expect(page.getByTestId("preloader")).toHaveCount(0, { timeout: 6000 });
+
+    const header = page.getByRole("banner");
+    await expect(header.getByRole("link", { name: /inicio/i })).toBeVisible();
+    await expect(header.getByTestId("header-cta")).toBeVisible();
+    await expect(header.getByTestId("mobile-menu-trigger")).toBeVisible();
+  });
+
+  test("el menú móvil ocupa toda la pantalla y el cierre queda a la vista", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await expect(page.getByTestId("preloader")).toHaveCount(0, { timeout: 6000 });
+
+    await page.getByTestId("mobile-menu-trigger").click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+
+    const box = await dialog.boundingBox();
+    expect(box?.width ?? 0).toBeGreaterThanOrEqual(389);
+    expect(box?.height ?? 0).toBeGreaterThanOrEqual(843);
+
+    await expect(page.getByTestId("mobile-menu-close")).toBeInViewport();
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+  });
+
   test("en móvil se conserva la barra nativa del navegador", async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== "movil", "Solo en móvil");
 

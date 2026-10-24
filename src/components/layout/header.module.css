@@ -2,9 +2,19 @@
   position: sticky;
   top: 0;
   z-index: 60;
-  background-color: rgba(240, 237, 228, 0.94);
+  background-color: rgba(240, 237, 228, 0.92);
   border-bottom: 1px solid var(--line-soft);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.header[data-scrolled="true"] {
+  background-color: rgba(240, 237, 228, 0.97);
+  border-bottom-color: var(--line);
+  box-shadow: 0 12px 28px -22px rgba(22, 21, 15, 0.55);
 }
 
 .shell {
@@ -138,13 +148,19 @@
   font-size: 0.625rem;
 }
 
+.ctaShort {
+  display: none;
+}
+
 @media (max-width: 68rem) {
   .nav {
     display: none;
   }
 
+  /* Sin navegación central quedan dos pistas: firma a la izquierda y acciones
+     alineadas al borde derecho. */
   .shell {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr;
   }
 }
 
@@ -155,12 +171,29 @@
 }
 
 @media (max-width: 44rem) {
-  .actions .cta {
-    display: none;
+  .shell {
+    gap: 1rem;
+    padding-inline: var(--gutter);
   }
 
   .actions {
-    gap: 0.5rem;
+    gap: 0.6rem;
+  }
+
+  .cta {
+    min-height: 2.5rem;
+    gap: 0.6rem;
+    padding: 0.55rem 1rem;
+    font-size: 0.5625rem;
+    letter-spacing: 0.16em;
+  }
+
+  .ctaFull {
+    display: none;
+  }
+
+  .ctaShort {
+    display: inline;
   }
 }
 
