@@ -1,6 +1,13 @@
 import type { TattooStyle } from "@/config/site";
 
-export type WorkStatus = "publicado" | "demostracion";
+/**
+ * Estado editorial de la pieza.
+ *
+ * - `publicado`: pieza que la artista ha aprobado publicar (imagen propia).
+ * - `muestra`: imagen de muestra usada mientras no existen fotografías reales.
+ *   La ficha lo indica de forma visible y se sirve con `noindex`.
+ */
+export type WorkStatus = "publicado" | "muestra";
 
 export type WorkImage = {
   src: string;
@@ -31,96 +38,131 @@ export type Work = {
 /**
  * Portfolio.
  *
- * IMPORTANTE — no hay fotografías reales de tatuajes en este repositorio.
- * Las entradas siguientes son FICHAS DE DEMOSTRACIÓN: documentan la plantilla de
- * trabajo, no piezas atribuidas a la artista. Se marcan como `demostracion`,
- * se excluyen del sitemap y se sirven con `noindex`.
+ * Las cuatro imágenes actuales son MUESTRAS de dirección de arte: sirven para
+ * mostrar la composición editorial del portfolio mientras no existan fotografías
+ * de trabajos reales. Se declaran como `muestra` (aviso visible + `noindex`) y
+ * nunca se presentan como piezas ejecutadas por la artista.
  *
- * Para publicar una pieza real:
- *   1. Añade las fotografías en `public/images/trabajos/<slug>/`.
- *   2. Duplica una entrada, completa `title`, `style`, `bodyArea`, `concept` y
- *      `images` (con width/height reales) y marca `status: "publicado"`.
- *   3. `featured: true` la destaca en la página de inicio (máximo 4).
+ * Sustituir una muestra por una pieza real:
+ *   1. Guarda las fotografías en `design/portfolio-muestras/<archivo>.png`
+ *      (o edita `scripts/prepare-assets.mjs` para tu propia ruta).
+ *   2. Cambia el `source` en `WORKS` de `scripts/prepare-assets.mjs` y ejecuta
+ *      `npm run assets`: genera `public/images/trabajos/<slug>/01.jpg|webp`
+ *      recortado en 4:5 y en monocromo.
+ *   3. En esta lista, ajusta `title`, `bodyArea`, `year`, `summary` y `concept`
+ *      con la información real y pon `status: "publicado"`.
+ *   4. `featured: true` la destaca en la portada (máximo 4).
  */
 export const works: Work[] = [
   {
     slug: "linea-fina-botanica",
-    title: "Pieza botánica de línea fina",
+    title: "Botánica de línea fina",
     style: "linea-fina",
     styleLabel: "Línea fina",
-    bodyArea: null,
+    bodyArea: "Antebrazo",
     year: null,
-    status: "demostracion",
-    summary: "Ficha de demostración de una pieza de línea fina.",
+    status: "muestra",
+    summary: "Ramo de flores silvestres dibujado con un solo peso de línea.",
     concept:
-      "Esta ficha muestra cómo se presenta una pieza cuando existen fotografías reales: título, estilo, zona del cuerpo, concepto del diseño y galería. No describe un trabajo real de Ona Rigola.",
-    images: [],
+      "Una composición botánica de trazo continuo: tallo fino, hojas pequeñas y tres flores abiertas que respiran sobre la piel. El dibujo se adapta a la curva del antebrazo para que la línea no se cierre ni se pierda con el gesto.",
+    images: [
+      {
+        src: "/images/trabajos/linea-fina-botanica/01.jpg",
+        width: 1400,
+        height: 1750,
+        alt: "Tatuaje de línea fina en el antebrazo con un tallo, hojas pequeñas y tres flores silvestres",
+      },
+    ],
     featured: true,
   },
   {
-    slug: "blackwork-mineral",
-    title: "Pieza de blackwork",
+    slug: "linea-fina-ramita",
+    title: "Ramita de línea fina",
+    style: "linea-fina",
+    styleLabel: "Línea fina",
+    bodyArea: "Brazo",
+    year: null,
+    status: "muestra",
+    summary: "Una sola rama, hoja a hoja, en el interior del brazo.",
+    concept:
+      "Menos es más: una rama ligera que sube por el brazo con hojas alternas. La escala pequeña y el trazo uniforme hacen que la pieza gane con el tiempo, cuando la línea se asienta y el contraste se suaviza.",
+    images: [
+      {
+        src: "/images/trabajos/linea-fina-ramita/01.jpg",
+        width: 1400,
+        height: 1751,
+        alt: "Tatuaje de línea fina en el brazo con una rama de hojas alternas dibujada en trazo continuo",
+      },
+    ],
+    featured: true,
+  },
+  {
+    slug: "blackwork-floral",
+    title: "Blackwork floral",
     style: "blackwork",
     styleLabel: "Blackwork",
-    bodyArea: null,
+    bodyArea: "Hombro",
     year: null,
-    status: "demostracion",
-    summary: "Ficha de demostración de una pieza de blackwork.",
+    status: "muestra",
+    summary: "Masa negra con reservas botánicas: contraste y presencia.",
     concept:
-      "Plantilla de ficha para una composición de masas negras. El contenido definitivo se escribirá a partir de la pieza real, con su propio relato de diseño.",
-    images: [],
+      "Una pieza de contraste pleno: el negro construye la forma y el dibujo aparece en negativo, como una lámina botánica revelada dentro de la tinta. La silueta sigue la redondez del hombro.",
+    images: [
+      {
+        src: "/images/trabajos/blackwork-floral/01.jpg",
+        width: 1400,
+        height: 1750,
+        alt: "Tatuaje de blackwork en el hombro con una forma negra y motivos florales en negativo",
+      },
+    ],
     featured: true,
   },
   {
-    slug: "ornamental-simetrica",
-    title: "Pieza ornamental simétrica",
+    slug: "ornamental-clavicula",
+    title: "Ornamental de clavícula",
     style: "ornamental",
     styleLabel: "Ornamental",
-    bodyArea: null,
+    bodyArea: "Clavícula",
     year: null,
-    status: "demostracion",
-    summary: "Ficha de demostración de una pieza ornamental.",
+    status: "muestra",
+    summary: "Simetría fina que acompaña la línea natural del cuerpo.",
     concept:
-      "Plantilla de ficha para una pieza ornamental construida desde la simetría. Ejemplo de estructura editorial, sin fotografías atribuidas a la artista.",
-    images: [],
-    featured: true,
-  },
-  {
-    slug: "linea-fina-floral",
-    title: "Pieza floral de línea fina",
-    style: "linea-fina",
-    styleLabel: "Línea fina",
-    bodyArea: null,
-    year: null,
-    status: "demostracion",
-    summary: "Ficha de demostración de una pieza floral.",
-    concept:
-      "Plantilla de ficha para un motivo floral de trazo continuo. Se completará con las fotografías y el concepto reales en cuanto estén disponibles.",
-    images: [],
+      "Un dibujo ornamental pensado para el escote: eje central, simetría medida y detalles mínimos. La pieza se apoya en la anatomía en lugar de competir con ella, con líneas que siguen la clavícula.",
+    images: [
+      {
+        src: "/images/trabajos/ornamental-clavicula/01.jpg",
+        width: 1400,
+        height: 1750,
+        alt: "Tatuaje ornamental simétrico en la clavícula con una flor central y líneas finas laterales",
+      },
+    ],
     featured: true,
   },
 ];
 
-/** Piezas publicadas (reales). Hoy no hay ninguna. */
+/** Piezas publicadas (reales). */
 export const publishedWorks = works.filter((work) => work.status === "publicado");
 
 /** Piezas destacadas para la portada. */
 export const featuredWorks = works.filter((work) => work.featured).slice(0, 4);
 
-/** Número de huecos reservados que se muestran en la portada. */
+/** Número de piezas que se muestran en la vista previa de la portada. */
 export const portfolioSlots = 4;
+
+/** ¿Hay alguna pieza publicada de verdad? */
+export const hasPublishedWorks = publishedWorks.length > 0;
 
 export function getWorkBySlug(slug: string): Work | undefined {
   return works.find((work) => work.slug === slug);
 }
 
 /**
- * Siguiente pieza publicada (navegación circular). Con el portfolio vacío no
- * hay siguiente: la interfaz simplemente no muestra ese enlace.
+ * Siguiente pieza publicada (navegación circular). Mientras no haya piezas
+ * publicadas se usa la siguiente muestra para no dejar la navegación muerta.
  */
 export function getNextPublishedWork(slug: string): Work | undefined {
-  if (publishedWorks.length === 0) return undefined;
-  const index = publishedWorks.findIndex((work) => work.slug === slug);
-  if (index === -1) return publishedWorks[0];
-  return publishedWorks[(index + 1) % publishedWorks.length];
+  const pool = hasPublishedWorks ? publishedWorks : works;
+  const index = pool.findIndex((work) => work.slug === slug);
+  if (index === -1) return pool[0];
+  return pool[(index + 1) % pool.length];
 }

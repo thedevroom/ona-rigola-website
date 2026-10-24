@@ -29,10 +29,10 @@ test.describe("Rutas y estructura", () => {
     await expect(page.getByRole("link", { name: /volver al inicio/i })).toBeVisible();
   });
 
-  test("la ficha de trabajo de demostración está marcada como noindex", async ({ page }) => {
+  test("las fichas con imagen de muestra se marcan como noindex", async ({ page }) => {
     await page.goto("/trabajos/linea-fina-botanica");
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
-    await expect(page.getByText(/contenido de demostración/i).first()).toBeVisible();
+    await expect(page.getByText(/imagen de muestra/i).first()).toBeVisible();
   });
 
   test("sitemap, robots y og image se generan", async ({ request }) => {
@@ -83,6 +83,22 @@ test.describe("Navegación", () => {
     await expect(page.getByTestId("booking-form")).toBeVisible();
   });
 
+  test("el portfolio muestra imágenes reales enlazadas a su ficha", async ({ page }) => {
+    await page.goto("/trabajos");
+    const images = page.locator("main img");
+    expect(await images.count()).toBeGreaterThanOrEqual(4);
+    const firstWidth = await images
+      .first()
+      .evaluate((img) => (img as HTMLImageElement).naturalWidth);
+    expect(firstWidth).toBeGreaterThan(300);
+    await page
+      .getByRole("link", { name: /ver la pieza/i })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/\/trabajos\/[a-z-]+$/);
+    await expect(page.locator("h1")).toBeVisible();
+  });
+
   test("no hay enlaces internos rotos", async ({ page }) => {
     for (const route of routes) {
       await page.goto(route.path);
@@ -127,7 +143,7 @@ test.describe("Formulario de cita", () => {
     await expect(page.getByLabel(/^nombre/i)).toHaveAttribute("aria-invalid", "true");
   });
 
-  test("el envío sin proveedor configurado no simula un envío correcto", async ({ page }) => {
+  test("el envío sin proveedor no simula un envío correcto", async ({ page }) => {
     await page.goto("/contacto");
     await page.getByLabel(/^nombre/i).fill("Cliente de prueba");
     await page.getByLabel(/^correo electrónico/i).fill("prueba@example.com");
@@ -137,7 +153,7 @@ test.describe("Formulario de cita", () => {
     await page.getByLabel(/^he leído la/i).check();
     await page.getByTestId("booking-submit").click();
     await expect(page.getByTestId("booking-status")).toContainText(
-      /no se ha enviado|no está activada|no disponible/i,
+      /no se ha enviado|no ha podido entregar/i,
       { timeout: 10_000 },
     );
     await expect(page.getByTestId("booking-success")).toHaveCount(0);

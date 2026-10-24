@@ -62,8 +62,6 @@ export function Hero() {
               <ArrowRight />
             </Link>
           </div>
-
-          <p className={styles.note}>Portfolio en preparación — fotografías reales próximamente</p>
         </div>
 
         <figure className={styles.media}>
@@ -97,7 +95,6 @@ export function Hero() {
             Scroll
             <span className={styles.scrollLine} aria-hidden="true" />
           </span>
-          <span className={styles.disclaimer}>Sitio en preparación — contenido provisional</span>
         </div>
       </div>
     </section>

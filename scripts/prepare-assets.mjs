@@ -1,26 +1,27 @@
 /**
- * Genera los recursos derivados del sitio (retratos, iconos y favicon) a partir
- * de los archivos originales depositados en `design/reference/`.
+ * Genera los recursos derivados del sitio (retratos, portfolio, iconos y
+ * favicon) a partir de los archivos originales depositados en `design/`.
  *
  * Uso: `npm run assets`
  *
  * Notas:
- * - El original se conserva intacto: nunca se sobrescribe.
- * - Los retratos se recortan y se convierten a monocromo (tratamiento de la
- *   dirección de arte) sin deformar la imagen: solo se recorta y se ajusta el
- *   contraste.
- * - Si algún día se sustituye la fotografía por otra, basta con reemplazar
- *   `design/reference/ona-rigola-fotografia-original.png` y volver a ejecutar
- *   el script.
+ * - Los originales se conservan intactos: nunca se sobrescriben.
+ * - Las imágenes se recortan y se convierten a monocromo (tratamiento de la
+ *   dirección de arte) sin deformar la composición: solo se recorta y se ajusta
+ *   el contraste.
+ * - Si se sustituye una fotografía, basta con reemplazar el archivo original y
+ *   volver a ejecutar el script.
  */
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const ORIGINAL = path.join(ROOT, "design/reference/ona-rigola-fotografia-original.png");
 const OUT_PORTRAITS = path.join(ROOT, "public/images/retrato");
+const OUT_WORKS = path.join(ROOT, "public/images/trabajos");
 const APP_ICONS = path.join(ROOT, "src/app");
+const WORK_SOURCES = path.join(ROOT, "design/portfolio-muestras");
 
 /** Recortes expresados en píxeles sobre la fotografía original (900 × 1600). */
 const CROPS = [
@@ -42,11 +43,43 @@ const CROPS = [
   },
   {
     name: "ona-rigola-retrato-detalle",
-    // 1:1 — encuadre cerrado, para bloques pequeños y OG
+    // 1:1 — encuadre cerrado, para bloques pequeños
     left: 110,
     top: 60,
     width: 780,
     height: 780,
+  },
+];
+
+/**
+ * Piezas del portfolio.
+ *
+ * `focus` es el punto (0–1) que se conserva al recortar en 4:5. Cada pieza
+ * produce una versión de tarjeta y una versión de ficha.
+ */
+const WORKS = [
+  {
+    slug: "linea-fina-botanica",
+    source: "muestra-01-linea-fina-botanica.png",
+    focus: { x: 0.5, y: 0.55 },
+  },
+  {
+    slug: "linea-fina-ramita",
+    source: "muestra-02-linea-fina-ramita.png",
+    focus: { x: 0.42, y: 0.5 },
+  },
+  {
+    slug: "blackwork-floral",
+    source: "muestra-03-blackwork-floral.png",
+    // La pieza ocupa una franja central: se recorta más cerca para que la
+    // tarjeta no muestre tanto aire alrededor.
+    focus: { x: 0.5, y: 0.52 },
+    zoom: 1.35,
+  },
+  {
+    slug: "ornamental-clavicula",
+    source: "muestra-04-ornamental-clavicula.png",
+    focus: { x: 0.5, y: 0.55 },
   },
 ];
 
@@ -86,6 +119,17 @@ function packIco(images) {
   return Buffer.concat([header, directory, ...images.map((image) => image.data)]);
 }
 
+/** Aplica el tratamiento monocromático común a todas las imágenes del sitio. */
+function monochrome(input) {
+  return (
+    sharp(input)
+      .greyscale()
+      // Negros ligeramente levantados y contraste suave, como en la referencia.
+      .linear(0.98, 12)
+      .modulate({ brightness: 1.02 })
+  );
+}
+
 async function buildPortraits() {
   await mkdir(OUT_PORTRAITS, { recursive: true });
   const metadata = await sharp(ORIGINAL).metadata();
@@ -97,27 +141,61 @@ async function buildPortraits() {
       );
     }
 
-    const base = sharp(ORIGINAL)
-      .extract({ left: crop.left, top: crop.top, width: crop.width, height: crop.height })
-      .greyscale()
-      // Ligeros ajustes tonales: negros ligeramente levantados y contraste suave,
-      // como en la referencia monocromática.
-      .linear(0.98, 12)
-      .modulate({ brightness: 1.02 });
+    const base = monochrome(
+      await sharp(ORIGINAL)
+        .extract({ left: crop.left, top: crop.top, width: crop.width, height: crop.height })
+        .toBuffer(),
+    );
 
-    await base
+    const jpeg = await base.clone().jpeg({ quality: 86, mozjpeg: true }).toBuffer();
+    const webp = await base.clone().resize({ width: 1200 }).webp({ quality: 82 }).toBuffer();
+
+    await writeFile(path.join(OUT_PORTRAITS, `${crop.name}.jpg`), jpeg);
+    await writeFile(path.join(OUT_PORTRAITS, `${crop.name}.webp`), webp);
+    console.log(`✓ retrato ${crop.name}`);
+  }
+}
+
+async function buildWorks() {
+  await mkdir(OUT_WORKS, { recursive: true });
+
+  for (const work of WORKS) {
+    const sourcePath = path.join(WORK_SOURCES, work.source);
+    const source = await readFile(sourcePath);
+    const metadata = await sharp(source).metadata();
+    const targetRatio = 4 / 5;
+
+    // Recorte 4:5 centrado en el punto de interés, sin deformar la imagen.
+    let width = Math.round(metadata.width / (work.zoom ?? 1));
+    let height = Math.round(width / targetRatio);
+    if (height > metadata.height) {
+      height = metadata.height;
+      width = Math.round(height * targetRatio);
+    }
+    const left = Math.round(
+      Math.min(Math.max(work.focus.x * metadata.width - width / 2, 0), metadata.width - width),
+    );
+    const top = Math.round(
+      Math.min(Math.max(work.focus.y * metadata.height - height / 2, 0), metadata.height - height),
+    );
+
+    const base = monochrome(await sharp(source).extract({ left, top, width, height }).toBuffer());
+
+    const directory = path.join(OUT_WORKS, work.slug);
+    await mkdir(directory, { recursive: true });
+
+    const jpeg = await base
       .clone()
-      .jpeg({ quality: 86, mozjpeg: true, chromaSubsampling: "4:4:4" })
-      .toFile(path.join(OUT_PORTRAITS, `${crop.name}.jpg`));
+      .resize({ width: 1400 })
+      .jpeg({ quality: 86, mozjpeg: true })
+      .toBuffer();
+    const webp = await base.clone().resize({ width: 1200 }).webp({ quality: 82 }).toBuffer();
 
-    const width = Math.min(1200, crop.width);
-    await base
-      .clone()
-      .resize({ width, withoutEnlargement: true })
-      .webp({ quality: 82 })
-      .toFile(path.join(OUT_PORTRAITS, `${crop.name}.webp`));
+    await writeFile(path.join(directory, "01.jpg"), jpeg);
+    await writeFile(path.join(directory, "01.webp"), webp);
 
-    console.log(`✓ ${crop.name}`);
+    const final = await sharp(jpeg).metadata();
+    console.log(`✓ pieza ${work.slug} (${final.width}×${final.height})`);
   }
 }
 
@@ -149,5 +227,6 @@ async function buildIcons() {
 }
 
 await buildPortraits();
+await buildWorks();
 await buildIcons();
 console.log("\nRecursos generados correctamente.");

@@ -26,7 +26,8 @@ Cobertura:
 
 1. Las 9 rutas públicas responden 200 y tienen un único `h1` con el título esperado.
 2. Ruta inexistente → HTTP 404 con la página 404 de marca y enlace de vuelta.
-3. La ficha de demostración sirve `meta robots noindex` y muestra el aviso de demostración.
+3. Las fichas con imagen de muestra sirven `meta robots noindex` y lo indican en la nota
+   de la ficha.
 4. `sitemap.xml`, `robots.txt` y `opengraph-image` se generan (200 y `image/png`).
 5. La navegación (escritorio y menú móvil) lleva a «Trabajos» y «Sobre mí».
 6. El CTA «Solicita una cita» lleva a `/contacto` y muestra el formulario.
@@ -35,12 +36,15 @@ Cobertura:
    cambiar de ruta.
 9. Validación del formulario: nombre, correo, idea mínima de 20 caracteres y consentimiento;
    `aria-invalid="true"` en el campo con error.
-10. Envío sin proveedor configurado: no se declara éxito y se explica que no se ha enviado.
+10. Envío sin proveedor configurado: no se declara éxito (mensaje de error genérico, sin
+    exponer configuración interna al visitante).
 11. El endpoint rechaza payloads inválidos con `400` y errores por campo.
-12. La imagen principal tiene `alt` descriptivo y no hay errores de consola ni de red.
-13. Títulos, descripciones (> 60 caracteres) y canónicas únicas en las 9 páginas.
-14. Todos los bloques JSON-LD se parsean como JSON válido.
-15. No existen enlaces `href="#"` ni `href=""`.
+12. El portfolio muestra imágenes reales (todas cargan, `naturalWidth` > 300) y cada
+    tarjeta enlaza con su ficha.
+13. La imagen principal tiene `alt` descriptivo y no hay errores de consola ni de red.
+14. Títulos, descripciones (> 60 caracteres) y canónicas únicas en las 9 páginas.
+15. Todos los bloques JSON-LD se parsean como JSON válido.
+16. No existen enlaces `href="#"` ni `href=""`.
 
 ### Nota sobre el entorno de ejecución de Playwright
 
@@ -96,7 +100,7 @@ pantalla real: no estaban disponibles en el entorno. Recomendado antes de public
 ## 5. SEO técnico
 
 - Una canónica por página, títulos y descripciones únicos (comprobado en pruebas).
-- `sitemap.xml` con 9 URLs públicas; las fichas de demostración quedan fuera.
+- `sitemap.xml` con 9 URLs públicas; las fichas de muestra quedan fuera.
 - `robots.txt`: bloqueo total cuando `NEXT_PUBLIC_SITE_URL` es local/preview; en producción
   permite todo salvo `/api/` y declara el sitemap.
 - JSON-LD válido sintácticamente en todas las páginas (parseado en pruebas).
@@ -119,7 +123,8 @@ resultado medido.
 
 ## 7. Riesgos y tareas antes de publicar
 
-1. Cargar fotografías reales del portfolio y cambiar `contentStatus` a `"final"`.
+1. Cargar fotografías reales del portfolio y cambiar su `status` de `"muestra"` a
+   `"publicado"` (y añadirlas al sitemap).
 2. Configurar el proveedor de correo y probar un envío real de extremo a extremo.
 3. Completar los datos legales y hacer revisar los textos por un profesional.
 4. Publicar el dominio definitivo en `NEXT_PUBLIC_SITE_URL` y verificar `robots.txt`.

@@ -40,7 +40,7 @@
   transform: scale(1.02);
 }
 
-/* --- Marco vacío: espacio reservado para una fotografía real ------------- */
+/* --- Marco vacío: respaldo si una pieza se queda sin imágenes ------------- */
 
 .placeholder {
   position: absolute;

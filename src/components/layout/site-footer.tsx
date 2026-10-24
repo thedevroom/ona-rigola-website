@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { legalNavigation, mainNavigation, siteConfig } from "@/config/site";
-import { StarGlyph, StatusDot } from "@/components/ui/icons";
+import { StarGlyph } from "@/components/ui/icons";
 import styles from "./footer.module.css";
 
 export function SiteFooter() {
@@ -80,7 +80,9 @@ export function SiteFooter() {
               ) : null}
               {!contact.email && !contact.phone && !contact.instagram ? (
                 <li>
-                  <p className={styles.note}>Los canales directos se publicarán al confirmarse.</p>
+                  <p className={styles.note}>
+                    Escríbeme a través del formulario y te responderé personalmente.
+                  </p>
                 </li>
               ) : null}
             </ul>
@@ -97,13 +99,6 @@ export function SiteFooter() {
             © {siteConfig.copyrightYear} {siteConfig.name}
           </span>
         </div>
-
-        {siteConfig.contentStatus === "provisional" ? (
-          <p className={styles.provisional}>
-            <StatusDot aria-hidden="true" />
-            Contenido provisional — pendiente de fotografías y datos reales
-          </p>
-        ) : null}
       </div>
     </footer>
   );

@@ -207,3 +207,13 @@
     gap: 1.5rem;
   }
 }
+
+.galleryNote {
+  margin-top: 1rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-55);
+  max-width: 52ch;
+}

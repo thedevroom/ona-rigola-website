@@ -12,16 +12,15 @@ type WorkFrameProps = {
   aspect?: Aspect;
   sizes: string;
   priority?: boolean;
-  /** Enlace a la ficha individual. Solo se usa para piezas publicadas. */
+  /** Enlaza la pieza con su ficha individual. */
   linkToWork?: boolean;
 };
 
 /**
- * Pieza del portfolio.
+ * Pieza del portfolio: imagen optimizada + título + estilo, enlazada a su ficha.
  *
- * - Con imágenes reales: imagen optimizada + título + estilo + enlace a ficha.
- * - Sin imágenes (fichas de demostración): marco vacío diseñado, sin simular
- *   una fotografía que no existe.
+ * Las piezas con `status: "muestra"` se sirven con `noindex` y se explican en la
+ * nota de fine print de la página; no se presentan como trabajo real.
  */
 export function WorkFrame({
   work,

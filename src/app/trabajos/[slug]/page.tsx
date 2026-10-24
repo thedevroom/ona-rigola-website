@@ -4,8 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getNextPublishedWork, getWorkBySlug, works } from "@/content/works";
 import { siteConfig } from "@/config/site";
-import { Notice } from "@/components/ui/notice";
-import { ArrowRight, StarGlyph } from "@/components/ui/icons";
+import { ArrowRight } from "@/components/ui/icons";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildPageMetadata, buildBreadcrumbList } from "@/lib/seo";
 import styles from "./detalle.module.css";
@@ -31,16 +30,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
   }
 
-  const isDemo = work.status === "demostracion";
+  const isSample = work.status === "muestra";
 
   return buildPageMetadata({
-    title: isDemo ? `${work.title} (ficha de demostración)` : work.title,
-    description: isDemo
-      ? "Ficha de demostración de la plantilla de trabajos del portfolio. Todavía no incluye fotografías reales."
-      : `${work.summary} Pieza de ${work.styleLabel.toLowerCase()} de Ona Rigola, tatuadora en Barcelona.`,
+    title: `${work.title} — Tatuaje ${work.styleLabel.toLowerCase()}`,
+    description: `${work.summary} Pieza de ${work.styleLabel.toLowerCase()} de Ona Rigola, tatuadora en Barcelona.`,
     pathname: `/trabajos/${work.slug}`,
-    // Las fichas de demostración nunca se indexan.
-    noindex: isDemo,
+    image: work.images[0]?.src,
+    // Las muestras no se indexan como si fueran piezas reales.
+    noindex: isSample,
   });
 }
 
@@ -50,7 +48,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
 
   if (!work) notFound();
 
-  const isDemo = work.status === "demostracion";
+  const isSample = work.status === "muestra";
   const nextWork = getNextPublishedWork(work.slug);
   const hasImages = work.images.length > 0;
 
@@ -78,19 +76,10 @@ export default async function WorkDetailPage({ params }: PageProps) {
         <div className="container">
           <div className={styles.headerTop}>
             <p className="eyebrow">Ficha de pieza</p>
-            {isDemo ? (
-              <span className="pending-badge">Contenido de demostración</span>
-            ) : (
-              <span className="label">{work.year ?? "Barcelona"}</span>
-            )}
           </div>
 
           <h1 className={styles.title}>{work.title}</h1>
-          <p className={styles.lede}>
-            {hasImages
-              ? work.summary
-              : "Esta ficha muestra la estructura con la que se presentará cada pieza: imágenes, concepto, estilo y zona del cuerpo."}
-          </p>
+          <p className={styles.lede}>{work.summary}</p>
 
           <dl className={styles.metaGrid}>
             <div>
@@ -106,8 +95,8 @@ export default async function WorkDetailPage({ params }: PageProps) {
               <dd className={styles.metaValue}>{work.year ?? "—"}</dd>
             </div>
             <div>
-              <dt className={styles.metaTerm}>Estado</dt>
-              <dd className={styles.metaValue}>{isDemo ? "Demostración" : "Publicada"}</dd>
+              <dt className={styles.metaTerm}>Escala</dt>
+              <dd className={styles.metaValue}>Dibujo a medida</dd>
             </div>
           </dl>
         </div>
@@ -128,7 +117,8 @@ export default async function WorkDetailPage({ params }: PageProps) {
                       alt={image.alt}
                       width={image.width}
                       height={image.height}
-                      sizes="(max-width: 68rem) 90vw, 40vw"
+                      sizes="(max-width: 68rem) 92vw, 42vw"
+                      priority
                       className={styles.galleryImage}
                     />
                   </div>
@@ -136,24 +126,15 @@ export default async function WorkDetailPage({ params }: PageProps) {
               </div>
             ) : (
               <div className={styles.placeholder}>
-                <StarGlyph size={22} />
-                <p className={styles.placeholderText}>Fotografía real pendiente</p>
+                <p className={styles.placeholderText}>Fotografía pendiente</p>
               </div>
             )}
 
-            {isDemo ? (
-              <div className={styles.fullNotice}>
-                <Notice
-                  eyebrow="Ficha de demostración"
-                  title="Sin imágenes atribuidas a la artista"
-                  link={{ href: "/contacto", label: "Consultar un diseño" }}
-                >
-                  Esta página documenta la plantilla de ficha de trabajo y no representa una pieza
-                  real de Ona Rigola. Cuando existan fotografías de trabajos reales, aparecerán aquí
-                  con su propio concepto y descripción.
-                </Notice>
-              </div>
-            ) : null}
+            <p className={styles.galleryNote}>
+              {isSample
+                ? "Imagen de muestra creada para la dirección de arte del sitio, pendiente de sustituir por la fotografía del trabajo real."
+                : `Pieza realizada en ${siteConfig.city}.`}
+            </p>
           </div>
 
           <aside className={styles.sidebar}>

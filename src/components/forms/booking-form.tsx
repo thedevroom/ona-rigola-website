@@ -72,7 +72,6 @@ export function BookingForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [serverMessage, setServerMessage] = useState<string>("");
-  const [serverCode, setServerCode] = useState<string>("");
   // Momento en que se muestra el formulario; se usa como señal antispam.
   const mountedAt = useRef<number | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -120,7 +119,6 @@ export function BookingForm() {
       setErrors(fields);
       setStatus("error");
       setServerMessage("Revisa los campos marcados antes de enviar.");
-      setServerCode("validation_error");
       focusFirstError(fields);
       return;
     }
@@ -128,7 +126,6 @@ export function BookingForm() {
     setErrors({});
     setStatus("submitting");
     setServerMessage("");
-    setServerCode("");
 
     try {
       const response = await fetch("/api/contacto", {
@@ -150,7 +147,6 @@ export function BookingForm() {
 
       if (data?.fields) setErrors(data.fields);
       setStatus("error");
-      setServerCode(data?.code ?? "unknown");
       setServerMessage(
         data?.message ??
           "No se ha podido enviar la solicitud. Revisa la conexión e inténtalo de nuevo.",
@@ -158,7 +154,6 @@ export function BookingForm() {
       if (data?.fields) focusFirstError(data.fields);
     } catch {
       setStatus("error");
-      setServerCode("network_error");
       setServerMessage(
         "No hay conexión con el servidor. La solicitud no se ha enviado: inténtalo de nuevo.",
       );
@@ -447,17 +442,11 @@ export function BookingForm() {
       <div aria-live="polite" aria-atomic="true" data-testid="booking-status">
         {status === "error" && serverMessage ? (
           <div className={`${styles.status} ${styles.statusError}`}>
-            <p className={styles.statusTitle}>
-              {serverCode === "not_configured" ? "Envío no disponible" : "No se ha enviado"}
-            </p>
+            <p className={styles.statusTitle}>No se ha enviado</p>
             <p className={styles.statusText}>{serverMessage}</p>
-            {serverCode === "not_configured" ? (
-              <p className={styles.hint}>
-                El formulario está maquetado y validado, pero el envío automático necesita
-                configurarse con un proveedor de correo y un buzón real. No se ha enviado ningún
-                mensaje.
-              </p>
-            ) : null}
+            <p className={styles.hint}>
+              Si el problema continúa, vuelve a intentarlo en unos minutos.
+            </p>
           </div>
         ) : null}
       </div>

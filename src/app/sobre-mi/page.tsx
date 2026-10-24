@@ -65,7 +65,6 @@ export default function AboutPage() {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
-            <p className={styles.note}>{about.provisionalNote}</p>
             <div className={styles.ctaRow}>
               <Link href="/trabajos" className="link-underline">
                 Ver el portfolio

@@ -72,20 +72,25 @@
 
 @media (max-width: 46rem) {
   .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem 1rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.25rem;
   }
 
   .item[data-slot="1"],
   .item[data-slot="2"],
   .item[data-slot="3"],
   .item[data-slot="4"] {
-    grid-column: span 1;
+    grid-column: 1 / -1;
     padding-top: 0;
   }
+}
 
-  .item[data-slot="2"],
-  .item[data-slot="4"] {
-    padding-top: 1.75rem;
-  }
+.sampleNote {
+  margin-top: 1.75rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink-55);
+  max-width: 62ch;
 }

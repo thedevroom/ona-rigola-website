@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
 import { BookingForm } from "@/components/forms/booking-form";
-import { isContactDeliveryConfigured, siteConfig } from "@/config/site";
+import { siteConfig } from "@/config/site";
 import { ArrowRight } from "@/components/ui/icons";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildPageMetadata, buildBreadcrumbList } from "@/lib/seo";
@@ -63,21 +63,7 @@ export default function ContactPage() {
               </div>
             </dl>
 
-            <p className={styles.note}>
-              {siteConfig.booking.responseNote} Los canales de contacto directos (correo, teléfono o
-              redes) se publicarán cuando estén confirmados.
-            </p>
-
-            {!isContactDeliveryConfigured ? (
-              <div className={styles.deliveryNotice} role="note">
-                <span className="pending-badge pending-badge--inverse">Aviso técnico</span>
-                <p>
-                  La recepción automática de solicitudes todavía no está activada. El formulario
-                  valida y prepara los datos, pero no envía ningún mensaje hasta que se configure un
-                  buzón real.
-                </p>
-              </div>
-            ) : null}
+            <p className={styles.note}>{siteConfig.booking.responseNote}</p>
           </div>
 
           <BookingForm />

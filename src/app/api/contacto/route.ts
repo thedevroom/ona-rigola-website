@@ -168,9 +168,8 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: false,
-        code: "not_configured",
-        message:
-          "La recepción de solicitudes aún no está activada. No se ha enviado ningún mensaje.",
+        code: "delivery_unavailable",
+        message: "No se ha podido entregar la solicitud. Inténtalo de nuevo en unos minutos.",
       },
       { status: 503 },
     );

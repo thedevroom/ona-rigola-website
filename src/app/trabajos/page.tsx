@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
-import { Notice } from "@/components/ui/notice";
 import { WorkFrame } from "@/components/ui/work-frame";
 import { BookingBand } from "@/components/sections/booking-band";
 import { works } from "@/content/works";
+import { siteConfig } from "@/config/site";
 import { ArrowRight } from "@/components/ui/icons";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildPageMetadata, buildBreadcrumbList } from "@/lib/seo";
@@ -13,7 +13,7 @@ import styles from "./trabajos.module.css";
 export const metadata: Metadata = buildPageMetadata({
   title: "Trabajos — Portfolio de tatuajes",
   description:
-    "Portfolio de tatuajes de Ona Rigola en Barcelona: piezas de línea fina, blackwork y diseños ornamentales. Colección en preparación, sin imágenes de archivo.",
+    "Portfolio de tatuajes de Ona Rigola en Barcelona: piezas de línea fina, blackwork y diseños ornamentales dibujados a medida para cada cuerpo.",
   pathname: "/trabajos",
   keywords: [
     "portfolio de tatuajes",
@@ -24,13 +24,11 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function WorksPage() {
-  const demoSlug = works[0]?.slug;
-
   return (
     <>
       <PageHeader
         eyebrow="Trabajos seleccionados"
-        index="01 / 04"
+        index={`${String(works.length).padStart(2, "0")} piezas`}
         title={
           <>
             Piezas dibujadas
@@ -38,7 +36,7 @@ export default function WorksPage() {
             <span className="italic-accent">una a una.</span>
           </>
         }
-        lede="Cada tatuaje se plantea como una pieza gráfica: escala, línea y espacio. El portfolio reúne los trabajos que la artista irá publicando."
+        lede="Cada tatuaje se plantea como una pieza gráfica: escala, línea y espacio. Una selección de trabajos de línea fina, blackwork y ornamental."
       />
 
       <section className={styles.section} aria-labelledby="portfolio-title">
@@ -46,20 +44,6 @@ export default function WorksPage() {
           <h2 id="portfolio-title" className="visually-hidden">
             Galería de trabajos
           </h2>
-
-          <Notice
-            eyebrow="Portfolio en preparación"
-            title="Las fotografías reales están por llegar"
-            link={
-              demoSlug
-                ? { href: `/trabajos/${demoSlug}`, label: "Ver plantilla de ficha" }
-                : undefined
-            }
-          >
-            Esta galería conserva los huecos reservados a las piezas reales de Ona Rigola: no se han
-            añadido fotografías de archivo que pudieran atribuirse a su trabajo. Cada pieza tendrá
-            su propia ficha con imágenes, estilo y concepto.
-          </Notice>
 
           <div className={styles.grid}>
             {works.map((work, index) => (
@@ -70,6 +54,7 @@ export default function WorksPage() {
                   aspect={index === 0 || index === 3 ? "tall" : "portrait"}
                   sizes="(max-width: 46rem) 92vw, (max-width: 68rem) 45vw, 42vw"
                   priority={index === 0}
+                  linkToWork
                 />
               </div>
             ))}
@@ -85,6 +70,12 @@ export default function WorksPage() {
               <ArrowRight />
             </Link>
           </div>
+
+          <p className={styles.sampleNote}>
+            Las imágenes de esta primera selección son muestras de la dirección de arte del
+            portfolio. Se sustituirán por las fotografías de los trabajos realizados en{" "}
+            {siteConfig.city}.
+          </p>
         </div>
       </section>
 

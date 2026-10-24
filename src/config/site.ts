@@ -26,11 +26,6 @@ const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost
 /** URL canónica del sitio, siempre sin barra final. */
 export const siteUrl = rawSiteUrl.replace(/\/+$/, "");
 
-/** ¿Hay proveedor de correo configurado? Determina el comportamiento real del formulario. */
-export const isContactDeliveryConfigured = Boolean(
-  process.env.CONTACT_API_KEY && process.env.CONTACT_FROM_EMAIL && process.env.CONTACT_TO_EMAIL,
-);
-
 export const siteConfig = {
   name: "Ona Rigola",
   /** Variante tipográfica de la firma (usada en cabecera y pie). */
@@ -92,11 +87,6 @@ export const siteConfig = {
       summary: "Estructuras simétricas y motivos decorativos dibujados a medida.",
     },
   ] satisfies TattooStyle[],
-  /**
-   * Estado del contenido. `provisional` activa avisos discretos en el sitio.
-   * Cambiar a `final` cuando existan fotografías y datos reales.
-   */
-  contentStatus: "provisional" as "provisional" | "final",
 } as const;
 
 export const mainNavigation: NavItem[] = [

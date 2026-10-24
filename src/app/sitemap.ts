@@ -4,7 +4,7 @@ import { absoluteUrl } from "@/lib/seo";
 /**
  * Sitemap.
  *
- * Solo incluye páginas públicas e indexables. Las fichas de demostración del
+ * Solo incluye páginas públicas e indexables. Las fichas de muestra del
  * portfolio quedan fuera (además llevan `noindex`) para no generar contenido de
  * relleno en los resultados de búsqueda.
  */

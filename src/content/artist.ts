@@ -27,9 +27,6 @@ export const about = {
     "Me interesa la elegancia de lo sencillo. Prefiero una pieza con pocos elementos y muy bien resueltos que una acumulación de detalles. Por eso cada diseño se dibuja a medida, se revisa contigo y se ajusta antes de la sesión.",
     "Mi referencia estética es editorial: tipografía, fotografía en blanco y negro, papel y tinta. Esa mirada se traslada al estudio y al modo en que planteo cada tatuaje, desde la primera idea hasta el resultado final.",
   ],
-  /** Texto explícitamente provisional, visible solo mientras no haya biografía real. */
-  provisionalNote:
-    "Texto de presentación provisional. La biografía definitiva, la formación y la trayectoria se incorporarán cuando la artista facilite la información.",
   philosophy: {
     title: "Filosofía",
     quote:

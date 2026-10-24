@@ -6,11 +6,12 @@ estricto y CSS Modules, a partir de la referencia de dirección de arte adjunta
 (`design/reference/referencia-direccion-de-arte.png`) y de la fotografía original de la
 artista (`design/reference/ona-rigola-fotografia-original.png`).
 
-> **Estado del contenido: provisional.** El repositorio incluye el retrato real y el
-> sistema visual completo, pero **no** contiene fotografías reales de tatuajes ni datos
-> de contacto verificados. Las fichas del portfolio son plantillas de demostración
-> marcadas como tales (`noindex`) y las páginas legales llevan los datos obligatorios
-> resaltados como pendientes. Ver [Información pendiente](#información-pendiente-de-la-propietaria).
+> **Estado del contenido.** El retrato de marca es la fotografía original de la artista.
+> Las cuatro imágenes del portfolio son **muestras de dirección de arte** (generadas para
+> este proyecto, sin atribuirse a trabajos reales): sus fichas se sirven con `noindex` y
+> se sustituyen por fotografías reales con un solo paso documentado. Los documentos
+> legales mantienen resaltados los datos obligatorios pendientes. Ver
+> [Información pendiente](#información-pendiente-de-la-propietaria).
 
 ---
 
@@ -138,31 +139,30 @@ npm start              # sirve el build en el puerto 3000
 
 ## 6. Comandos
 
-| Comando                           | Qué hace                                                                 |
-| --------------------------------- | ------------------------------------------------------------------------ |
-| `npm run dev`                     | Servidor de desarrollo.                                                  |
-| `npm run build` / `npm start`     | Build de producción y servidor.                                          |
-| `npm run typecheck`               | `tsc --noEmit` en modo estricto (incluye pruebas).                       |
-| `npm run lint`                    | ESLint con `eslint-config-next`.                                         |
-| `npm run format` / `format:check` | Prettier (escribe / verifica).                                           |
-| `npm run check`                   | typecheck + lint + formato.                                              |
-| `npm run assets`                  | Regenera retratos derivados, iconos y favicon desde `design/reference/`. |
-| `npm run a11y:contrast`           | Comprueba los ratios de contraste del sistema.                           |
-| `npm run test:e2e`                | Playwright (arranca build+start si no hay servidor).                     |
-| `npm run test:e2e:install`        | Instala Chromium con dependencias del sistema.                           |
+| Comando                           | Qué hace                                                   |
+| --------------------------------- | ---------------------------------------------------------- |
+| `npm run dev`                     | Servidor de desarrollo.                                    |
+| `npm run build` / `npm start`     | Build de producción y servidor.                            |
+| `npm run typecheck`               | `tsc --noEmit` en modo estricto (incluye pruebas).         |
+| `npm run lint`                    | ESLint con `eslint-config-next`.                           |
+| `npm run format` / `format:check` | Prettier (escribe / verifica).                             |
+| `npm run check`                   | typecheck + lint + formato.                                |
+| `npm run assets`                  | Regenera retratos, piezas del portfolio, iconos y favicon. |
+| `npm run a11y:contrast`           | Comprueba los ratios de contraste del sistema.             |
+| `npm run test:e2e`                | Playwright (arranca build+start si no hay servidor).       |
+| `npm run test:e2e:install`        | Instala Chromium con dependencias del sistema.             |
 
 ## 7. Variables de entorno
 
 Ver `.env.example`. Ninguna credencial se versiona.
 
-| Variable                | Uso                                                                                                                                   |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`  | Dominio público definitivo, sin barra final. Base de canónicas, sitemap, `robots.txt` y JSON-LD. Por defecto `http://localhost:3000`. |
-| `CONTACT_API_KEY`       | Clave del proveedor de correo (Resend).                                                                                               |
-| `CONTACT_FROM_EMAIL`    | Remitente verificado en el proveedor.                                                                                                 |
-| `CONTACT_TO_EMAIL`      | Buzón que recibe las solicitudes.                                                                                                     |
-| `CONTACT_PROVIDER`      | Documental; el endpoint implementa Resend.                                                                                            |
-| `NEXT_PUBLIC_DEMO_MODE` | Reservado para activar/desactivar avisos de contenido provisional.                                                                    |
+| Variable               | Uso                                                                                                                                   |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | Dominio público definitivo, sin barra final. Base de canónicas, sitemap, `robots.txt` y JSON-LD. Por defecto `http://localhost:3000`. |
+| `CONTACT_API_KEY`      | Clave del proveedor de correo (Resend).                                                                                               |
+| `CONTACT_FROM_EMAIL`   | Remitente verificado en el proveedor.                                                                                                 |
+| `CONTACT_TO_EMAIL`     | Buzón que recibe las solicitudes.                                                                                                     |
+| `CONTACT_PROVIDER`     | Documental; el endpoint implementa Resend.                                                                                            |
 
 ### Configurar el formulario
 
@@ -189,9 +189,13 @@ compartido (Redis/Upstash) o a la capa de plataforma.
 
 ### Añadir una pieza real al portfolio
 
-1. Optimiza las fotografías y guárdalas en `public/images/trabajos/<slug>/`
-   (por ejemplo `01.jpg`, `02.jpg`). Anota el ancho y alto reales.
-2. Edita `src/content/works.ts` y sustituye una entrada de demostración:
+1. Guarda la fotografía original en `design/portfolio-muestras/` (PNG o JPG de alta
+   resolución) y añade su entrada en el array `WORKS` de
+   `scripts/prepare-assets.mjs` (slug, archivo, punto de interés `focus` y `zoom`
+   opcional).
+2. Ejecuta `npm run assets`: genera `public/images/trabajos/<slug>/01.jpg` y `.webp`
+   recortados en 4:5 y en monocromo, sin deformar la imagen.
+3. Edita `src/content/works.ts` y sustituye la entrada de muestra:
 
 ```ts
 {
@@ -201,7 +205,7 @@ compartido (Redis/Upstash) o a la capa de plataforma.
   styleLabel: "Línea fina",
   bodyArea: "Antebrazo",
   year: "2026",
-  status: "publicado",                 // deja de ser noindex y entra en la ficha
+  status: "publicado",                 // deja de ser noindex
   summary: "Pieza botánica de trazo continuo.",
   concept: "Texto real del concepto, acordado con la clienta.",
   images: [
@@ -211,16 +215,19 @@ compartido (Redis/Upstash) o a la capa de plataforma.
 }
 ```
 
-3. Las fichas `publicado` se enlazan automáticamente, aparecen en «siguiente pieza» y
-   entran en el sitemap (ver `src/app/sitemap.ts`, hoy solo lista páginas estáticas).
-4. Las fichas con `status: "demostracion"` siguen sirviéndose con `noindex` y sin enlace
-   desde el portfolio.
+4. Las fichas con `status: "publicado"` dejan de llevar `noindex` y pasan a ser
+   indexables. Para incluirlas también en `sitemap.xml`, añádelas al array `routes` de
+   `src/app/sitemap.ts`.
+5. Las fichas con `status: "muestra"` se mantienen con `noindex` y se explican en la nota
+   de la página de trabajos.
 
 ### Sustituir fotografías
 
-- Reemplaza `design/reference/ona-rigola-fotografia-original.png` por la nueva fotografía
-  original y ejecuta `npm run assets`. El script recorta (sin deformar), convierte a
-  monocromo y escribe `public/images/retrato/*.jpg|webp` más los iconos.
+- Retrato: reemplaza `design/reference/ona-rigola-fotografia-original.png` y ejecuta
+  `npm run assets`. El script recorta (sin deformar), convierte a monocromo y escribe
+  `public/images/retrato/*.jpg|webp` más los iconos.
+- Portfolio: imágenes originales en `design/portfolio-muestras/` + entrada en `WORKS`
+  dentro de `scripts/prepare-assets.mjs`, y `npm run assets`.
 - Si cambian los encuadres, ajusta el array `CROPS` de `scripts/prepare-assets.mjs`.
 - No se usan imágenes remotas: `next.config.ts` bloquea orígenes externos.
 
@@ -267,7 +274,7 @@ Nada de esto se ha inventado; mientras falte, la interfaz lo indica o simplement
 muestra el dato.
 
 1. **Fotografías reales** de tatuajes (mínimo 4-8 piezas) con estilo, zona del cuerpo y
-   concepto. Sustituyen a las fichas de demostración.
+   concepto. Sustituyen a las cuatro imágenes de muestra del portfolio.
 2. **Correo electrónico** de contacto y, si procede, teléfono e Instagram
    (`siteConfig.contact`). Mientras sean `null` no aparece ningún canal directo.
 3. **Buzón y proveedor de correo** para activar el envío de solicitudes.
@@ -277,13 +284,14 @@ muestra el dato.
 5. **Operativa real**: condiciones de reserva, depósito, política de cancelación, precios,
    horarios, dirección del estudio (si es un espacio con atención al público) y
    titulación/registro sanitario aplicable.
-6. **Biografía verificable**: formación, trayectoria, años de actividad. Hoy el texto es
-   provisional y se declara como tal.
+6. **Biografía verificable**: formación, trayectoria y años de actividad. El texto actual se
+   escribió con lo que la artista facilitó; debe confirmarlo antes de publicar.
 7. **Dominio definitivo** para `NEXT_PUBLIC_SITE_URL`.
 8. **Redes sociales** confirmadas (para `siteConfig.socialProfiles` y `sameAs`).
 
-Cuando existan fotos y datos reales: pon `contentStatus: "final"` en `src/config/site.ts`
-para retirar los avisos de contenido provisional.
+Las muestras del portfolio se identifican con `status: "muestra"` en `src/content/works.ts`:
+al pasar a `"publicado"` la ficha deja de ser `noindex`. No hay otros avisos de estado en
+la interfaz.
 
 ---
 
@@ -297,8 +305,8 @@ para retirar los avisos de contenido provisional.
   horarios y entidad jurídica no confirmados (instrucciones para añadirlo: comentario en
   `src/lib/structured-data.ts`).
 - **Indexación**: `sitemap.xml` (9 URLs públicas), `robots.txt` (bloqueo total en
-  local/preview, `Disallow: /api/` en producción), `noindex` en las fichas de
-  demostración y `noindex` global si `NEXT_PUBLIC_SITE_URL` es local.
+  local/preview, `Disallow: /api/` en producción), `noindex` en las fichas de muestra y
+  `noindex` global si `NEXT_PUBLIC_SITE_URL` es local.
 - **Mapa de términos por página**:
 
 | Página                  | Objetivo principal                         | Secundarios                                                                                                 |
@@ -306,7 +314,7 @@ para retirar los avisos de contenido provisional.
 | `/`                     | tatuadora en Barcelona                     | tatuajes de línea fina en Barcelona, fine line tattoo Barcelona, blackwork Barcelona, tatuajes ornamentales |
 | `/sobre-mi`             | artista del tatuaje Barcelona              | diseños personalizados, tatuadora independiente                                                             |
 | `/trabajos`             | portfolio de tatuajes                      | línea fina, blackwork, ornamental                                                                           |
-| `/trabajos/[slug]`      | pieza concreta (cuando sea real)           | estilo + zona del cuerpo                                                                                    |
+| `/trabajos/[slug]`      | pieza concreta                             | estilo + zona del cuerpo                                                                                    |
 | `/proceso`              | cómo pedir cita para tatuarse en Barcelona | proceso, diseño personalizado                                                                               |
 | `/contacto`             | reservar una cita de tatuaje en Barcelona  | solicitud de cita, presupuesto                                                                              |
 | `/preguntas-frecuentes` | dudas antes de tatuarse                    | referencias, tamaño, cuidados                                                                               |
@@ -354,10 +362,11 @@ diseño; no se han medido en campo desde este entorno.
 
 ## 14. Limitaciones conocidas
 
-1. **No hay fotografías reales de tatuajes** en el repositorio: el portfolio muestra
-   huecos reservados y fichas de demostración con `noindex`.
-2. **El envío del formulario no está activo** hasta configurar las variables de correo. El
-   endpoint y la interfaz están completos y probados en su estado «no configurado».
+1. **No hay fotografías reales de tatuajes** en el repositorio: el portfolio usa cuatro
+   imágenes de muestra (dirección de arte) con ficha `noindex`.
+2. **El envío del formulario necesita configuración** (proveedor + buzón). Sin ella el
+   endpoint responde con un error genérico y no se envía nada; la interfaz no promete
+   entrega.
 3. **Los documentos legales son una estructura**, no un texto validado jurídicamente.
 4. **Datos de contacto ausentes** por decisión: no se inventan correo, teléfono, dirección
    ni Instagram.
