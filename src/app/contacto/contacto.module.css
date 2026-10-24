@@ -1,0 +1,127 @@
+.darkSection {
+  background-color: var(--ink);
+  color: var(--inverse);
+  padding-block: clamp(3rem, 7vw, 6rem);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  position: sticky;
+  top: calc(var(--header-height) + 2rem);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 1.7rem + 4.4vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.022em;
+  text-transform: uppercase;
+}
+
+.lede {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  line-height: 1.55;
+  color: var(--inverse-soft);
+  max-width: 32ch;
+}
+
+.facts {
+  border-top: 1px solid var(--line-inverse);
+}
+
+.fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--line-inverse);
+}
+
+.factTerm {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--inverse-soft);
+}
+
+.factValue {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  text-align: right;
+  color: var(--inverse);
+}
+
+.note {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--inverse-soft);
+  max-width: 40ch;
+}
+
+.deliveryNotice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line-inverse);
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--inverse-soft);
+  max-width: 42ch;
+}
+
+.lightSection {
+  padding-block: var(--section-space-sm);
+}
+
+.faqRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.faqBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.faqText {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink-70);
+  max-width: 46ch;
+}
+
+@media (max-width: 68rem) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aside {
+    position: static;
+  }
+}
